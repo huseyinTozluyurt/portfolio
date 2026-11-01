@@ -61,28 +61,96 @@ const experience = [
     period: '2026',
     type: 'Internship',
     summary:
-      'Applied search-intelligence track on an anonymized 30,000-page, 32-client slice of real Google Search data. The capstone asked whether a model can build a better 50-page "review first" queue for editors than the existing stale-and-high-traffic rule, on clients it has never seen.',
-    bullets: [
-      'Audited the 44-column dataset, wrote a data contract and ran feature-leakage probes: every allowed feature scores single-feature AUC 0.51–0.59, while the forbidden label-derived field scores 1.0.',
-      'Benchmarked missing-data strategies; median imputation plus missing-value indicators matched complete-case accuracy while keeping every row.',
-      'Compared the hand-written rule with logistic regression and a random forest over 20 repeated client-held-out splits, and showed that random page splits overstate transfer to new clients.',
-      'Found that a missing-position flag was a near-mechanical marker of "new" pages; the random forest was the only model that kept its top-50 precision once those pages were removed, so it became the default queue.',
-      'Delivered a client-held-out review queue with plain-language reason codes and a research write-up, framed as decision support for human editors.',
-    ],
+      'Applied search-intelligence internship on real, anonymized Google Search Console data: a 30,000-page starter CSV and a 78.8M-row warehouse queried with DuckDB. I worked through the full data-science cycle, from exploratory analysis and unsupervised segmentation to supervised models, explainability and a learning-to-rank Content Refresh Recommendation Engine, and wrote it up as a capstone research paper.',
+    paper: {
+      kicker: 'Capstone research paper',
+      title: 'Which content pages should an editor review first?',
+      meta: 'Hüseyin Tozluyurt · FlyRank ML Internship · October 2026',
+      abstract:
+        'A client-held-out comparison of the existing "stale and high-traffic" rule against logistic regression and a random forest on 30,000 anonymized pages. Both models beat the rule (Precision@50 0.77 and 0.75 vs 0.66), and only the random forest held its precision once a near-mechanical missing-data signal was removed.',
+      href: 'https://huseyintozluyurt.github.io/Flyrank-Internship-MachineLearning/#/paper',
+      siteHref: 'https://huseyintozluyurt.github.io/Flyrank-Internship-MachineLearning/',
+      image: 'flyrank-site-paper',
+      stats: [
+        { value: '41', label: 'analysis pages' },
+        { value: '48', label: 'notebooks explained' },
+        { value: '104', label: 'figures' },
+      ],
+      previews: [
+        { file: 'flyrank-site-home', caption: 'Project site: one page per notebook' },
+        { file: 'flyrank-site-stage2', caption: 'Module page: LambdaRank stage' },
+      ],
+    },
     metrics: [
-      { value: '0.75–0.77', label: 'Precision@50, models' },
-      { value: '0.66', label: 'Precision@50, existing rule' },
-      { value: '20 / 20', label: 'splits where models beat the rule on AP' },
+      { value: '0.77 vs 0.66', label: 'Precision@50, model vs existing rule' },
+      { value: '0.381 vs 0.263', label: 'NDCG@10, LambdaRank vs baseline' },
+      { value: '91,716', label: 'pages scored by the final engine' },
     ],
-    tech: ['Python', 'pandas', 'scikit-learn', 'DuckDB', 'Jupyter / Colab', 'Leakage audits'],
+    bullets: [
+      'Kept every result honest: leakage probes on each feature, whole clients held out in every evaluation, missing Search Console data kept as missing rather than zero, and negative results reported as such.',
+      'Moved heavy aggregation into DuckDB SQL over Parquet on Hugging Face, so only compact per-page tables reach pandas.',
+      'Published every notebook as its own explained page, plus the capstone paper, on a React project site.',
+    ],
+    deepDive: [
+      {
+        title: 'Data analysis',
+        open: true,
+        intro: 'Understanding the data before modelling it: distributions, missing values, structure and outliers.',
+        items: [
+          { name: 'Exploratory data analysis', method: 'pandas · seaborn · correlation', result: '30,000 pages, 54.2% labelled as declining; content age is the strongest single correlate (−0.16).' },
+          { name: 'Missing-data strategy study', method: 'SimpleImputer · MICE · KNN', result: 'Weighted F1 stayed at ≈0.84–0.85 under every strategy; on the warehouse, KNN recovered masked values with MAE 220 vs 495 for the median.' },
+          { name: 'Full warehouse in DuckDB', method: 'SQL window aggregation over hf://', result: '78.8M daily rows queried in place. A leaky model fell from 0.93 to 0.66 accuracy once features were limited to the window before the label.' },
+          { name: 'Content segmentation', method: 'K-Means · Ward clustering · DBSCAN', result: 'Nine segments (silhouette 0.224) whose decline share ranges from 34% to 67%; the label is used only to describe clusters afterwards.' },
+          { name: 'Dimensionality reduction', method: 'StandardScaler · PCA', result: '111,247 warehouse pages; two components keep 60.9% of the variance.' },
+          { name: 'Anomaly detection', method: 'Isolation Forest · DBSCAN · robust z-scores', result: 'Isolation Forest flagged 2,225 pages (2.0%) with a per-feature explanation; DBSCAN found 4,591 noise pages, split into potential winners and failures.' },
+        ],
+      },
+      {
+        title: 'Machine learning algorithms',
+        open: true,
+        intro: 'Supervised models, each compared with a simple baseline on clients the model never saw.',
+        items: [
+          { name: 'Rule baseline vs random forest', method: 'GroupShuffleSplit by client · Precision@K', result: 'Precision@50 0.68 for the forest vs 0.64 for the rule on 8 unseen clients.' },
+          { name: 'Content status (down / stable / up)', method: 'Logistic regression · RF · XGBoost · LightGBM · CatBoost', result: 'Five class-weighted models compared on balanced accuracy and macro F1; LightGBM chosen (≈0.55 balanced accuracy).' },
+          { name: 'Needs-refresh classifier', method: 'XGBoost · threshold analysis', result: 'ROC-AUC 0.81 and PR-AUC 0.78; best F1 0.74 at a 0.40 cutoff.' },
+          { name: 'Impressions regression', method: 'XGBoost regressor · RandomizedSearchCV', result: 'R² 0.74 on the CSV, but it lost to a naive "same as last month" baseline on the warehouse (0.40 vs 0.63), reported as a negative result.' },
+          { name: 'Explainability', method: 'Native, permutation and SHAP importance · PDPs', result: 'SHAP values from 21 one-hot columns aggregated back to 14 original features; previous impressions dominate.' },
+          { name: 'Capstone models', method: 'Logistic regression · random forest · 20 client-held-out splits', result: 'Both beat the existing rule on average precision in 20 of 20 splits.' },
+        ],
+      },
+      {
+        title: 'Content Refresh Recommendation Engine',
+        intro: 'An end-to-end ranking system on the full warehouse that tells editors which pages to refresh first, built and validated in stages.',
+        open: true,
+        steps: [
+          { name: 'Transparent rules', text: 'Version 1 scores DuckDB-aggregated signals with a weighted rule and explains every recommendation with reason codes. Stage 1 adds key-uniqueness, join (100% match) and score/tier assertions.' },
+          { name: 'Learning to rank', text: 'Stage 2 audits 43.1M rows, keeps missing Search Console data missing, grades 78,904 pages 0–4 by decline severity and trains LightGBM LambdaRank on 17 features from days 60–120. Over five client-held-out seeds it reaches NDCG@10 0.381 vs 0.263 for an impressions baseline and beats the rule baseline in 9 of 10 comparisons.' },
+          { name: 'Impact tracking', text: 'Stage 3 adds an editor intervention log, 30-day pre/post windows and a matched-control difference-in-differences design. With no refreshes logged yet, the estimate is skipped rather than invented.' },
+          { name: 'Production release', text: 'Stage 4 and the final notebook add validation gates on aggregation, evaluation and scoring, a drift reference and hashed model bundles. The final ranker scores 91,716 pages across 40 clients, sends 35 to the HIGH tier and passes 14 of 14 release checks.' },
+          { name: 'Output EDA', text: 'A separate notebook audits the exported queue: LambdaRank wins 45, ties 4 and loses 17 paired comparisons against the impressions baseline, and all 7 data-quality checks pass.' },
+        ],
+        link: { label: 'Engine README', href: 'https://github.com/huseyinTozluyurt/Flyrank-Internship-MachineLearning/tree/main/notebooks/ContentRefreshRecommendationEngine' },
+      },
+    ],
+    tech: ['Python', 'DuckDB', 'pandas', 'scikit-learn', 'LightGBM LambdaRank', 'XGBoost', 'SHAP', 'Hugging Face'],
     links: [
-      { label: 'Research paper', href: 'https://huseyintozluyurt.github.io/Flyrank-Internship-MachineLearning/' },
+      { label: 'Read the paper', href: 'https://huseyintozluyurt.github.io/Flyrank-Internship-MachineLearning/#/paper' },
+      { label: 'Project site', href: 'https://huseyintozluyurt.github.io/Flyrank-Internship-MachineLearning/' },
       { label: 'Repository', href: 'https://github.com/huseyinTozluyurt/Flyrank-Internship-MachineLearning' },
     ],
     photos: [
-      { file: 'flyrank-model-vs-baseline', fit: 'contain', caption: 'Models vs. existing rule on held-out clients' },
-      { file: 'flyrank-feature-signals', fit: 'contain', caption: 'Which page signals carry the ranking' },
-      { file: 'flyrank-photo', caption: 'Internship photo / certificate' },
+      { file: 'flyrank-model-vs-baseline', fit: 'contain', caption: 'Capstone: models vs the existing rule on held-out clients' },
+      { file: 'flyrank-rec-ndcg-holdouts', fit: 'contain', caption: 'Engine: NDCG across repeated client holdouts' },
+      { file: 'flyrank-rec-feature-importance', fit: 'contain', caption: 'Engine: top LambdaRank features' },
+      { file: 'flyrank-rec-seed-ndcg', fit: 'contain', caption: 'Engine: mean NDCG@10 by seed and method' },
+      { file: 'flyrank-segmentation-kmeans', fit: 'contain', caption: 'K-Means content segments (PCA view)' },
+      { file: 'flyrank-shap-aggregated', fit: 'contain', caption: 'SHAP importance aggregated to original features' },
+      { file: 'flyrank-needs-refresh', fit: 'contain', caption: 'XGBoost needs-refresh feature importance' },
+      { file: 'flyrank-anomaly-dbscan', fit: 'contain', caption: 'DBSCAN clusters and noise pages' },
+      { file: 'flyrank-feature-signals', fit: 'contain', caption: 'Capstone: which page signals carry the ranking' },
+      { file: 'flyrank-rec-score-by-tier', fit: 'contain', caption: 'Engine: LambdaRank score by priority tier' },
+      { file: 'flyrank-rec-rank-vs-score', fit: 'contain', caption: 'Engine: model rank vs score' },
+      { file: 'flyrank-rec-spearman', fit: 'contain', caption: 'Engine: feature correlation review' },
     ],
   },
   {
@@ -181,6 +249,89 @@ function Photo({ file, caption, fit }) {
   )
 }
 
+function PaperCard({ paper }) {
+  const src = images[paper.image]
+  return (
+    <section className="xp-paper" aria-label={paper.kicker}>
+      <div className="xp-paper__media">
+        <a className="xp-paper__shot" href={paper.href} target="_blank" rel="noreferrer">
+          {src && <img src={src} alt={`Screenshot of the paper: ${paper.title}`} loading="lazy" />}
+          <span className="xp-paper__badge mono">Open paper ↗</span>
+        </a>
+        {paper.previews && (
+          <div className="xp-paper__previews">
+            {paper.previews.map((p) => (
+              <Photo key={p.file} {...p} />
+            ))}
+          </div>
+        )}
+      </div>
+      <div className="xp-paper__body">
+        <p className="xp-paper__kicker mono">{paper.kicker}</p>
+        <h4 className="xp-paper__title">{paper.title}</h4>
+        <p className="xp-paper__meta mono">{paper.meta}</p>
+        <p className="xp-paper__abstract">{paper.abstract}</p>
+        <dl className="xp-paper__stats">
+          {paper.stats.map((st) => (
+            <div key={st.label}>
+              <dd>{st.value}</dd>
+              <dt className="mono">{st.label}</dt>
+            </div>
+          ))}
+        </dl>
+        <div className="xp-paper__actions">
+          <a href={paper.href} target="_blank" rel="noreferrer" className="btn btn--primary">Read the paper →</a>
+          <a href={paper.siteHref} target="_blank" rel="noreferrer" className="btn btn--ghost">Explore the project site</a>
+        </div>
+      </div>
+    </section>
+  )
+}
+
+function DeepDive({ sections }) {
+  return (
+    <div className="xp-deep">
+      {sections.map((sec) => (
+        <details className="xp-deep__section" key={sec.title} open={sec.open}>
+          <summary>
+            <span className="xp-deep__title">{sec.title}</span>
+            <span className="xp-deep__count mono">
+              {sec.items ? `${sec.items.length} studies` : `${sec.steps.length} stages`}
+            </span>
+          </summary>
+          <p className="xp-deep__intro">{sec.intro}</p>
+          {sec.items && (
+            <div className="xp-deep__grid">
+              {sec.items.map((it) => (
+                <div className="xp-deep__item" key={it.name}>
+                  <p className="xp-deep__name">{it.name}</p>
+                  <p className="xp-deep__method mono">{it.method}</p>
+                  <p className="xp-deep__result">{it.result}</p>
+                </div>
+              ))}
+            </div>
+          )}
+          {sec.steps && (
+            <ol className="xp-steps">
+              {sec.steps.map((st) => (
+                <li key={st.name}>
+                  <p className="xp-steps__name">{st.name}</p>
+                  <p className="xp-steps__text">{st.text}</p>
+                </li>
+              ))}
+            </ol>
+          )}
+          {sec.link && (
+            <a href={sec.link.href} target="_blank" rel="noreferrer" className="card__repo mono xp-deep__link">
+              {sec.link.label} →
+            </a>
+          )}
+        </details>
+      ))}
+    </div>
+  )
+}
+
 function ExperienceItem({ item, i }) {
   return (
     <li className="xp-item" id={`xp-${item.id}`}>
@@ -205,6 +356,8 @@ function ExperienceItem({ item, i }) {
 
           <p className="xp-card__summary">{item.summary}</p>
 
+          {item.paper && <PaperCard paper={item.paper} />}
+
           {item.metrics && (
             <dl className="xp-metrics">
               {item.metrics.map((m) => (
@@ -221,6 +374,8 @@ function ExperienceItem({ item, i }) {
               <li key={b}>{b}</li>
             ))}
           </ul>
+
+          {item.deepDive && <DeepDive sections={item.deepDive} />}
 
           <div className="xp-gallery">
             {item.photos.slice(0, GALLERY_PREVIEW).map((p) => (

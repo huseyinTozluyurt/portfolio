@@ -24,7 +24,7 @@ const images = Object.fromEntries(
 )
 
 // Photos shown before the "Show more" toggle.
-const GALLERY_PREVIEW = 6
+const GALLERY_PREVIEW = 8
 
 const experience = [
   {

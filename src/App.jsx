@@ -1,10 +1,13 @@
 import { Routes, Route } from 'react-router-dom'
 
 // Import your actual portfolio components
+import Nav from './components/Nav'
 import Hero from './components/Hero'
 import About from './components/About'
+import Experience from './components/Experience'
 import Work from './components/Work'
 import Contact from './components/Contact'
+import Footer from './components/Footer'
 
 // Import the new assignment document (from the src folder)
 import AssignmentDocument from './AssignmentDocument' 
@@ -16,12 +19,18 @@ export default function App() {
       <Route 
         path="/" 
         element={
-          <main>
-            <Hero />
-            <About />
-            <Work />
-            <Contact />
-          </main>
+          <>
+            <a href="#main" className="skip-link">Skip to content</a>
+            <Nav />
+            <main id="main">
+              <Hero />
+              <About />
+              <Experience />
+              <Work />
+              <Contact />
+            </main>
+            <Footer />
+          </>
         } 
       />
 

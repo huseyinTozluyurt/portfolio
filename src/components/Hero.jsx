@@ -18,18 +18,19 @@ export default function Hero() {
         </p>
 
         <div className="hero__actions">
-          <a href="#work" className="btn btn--primary">View the work →</a>
+          <a href="#experience" className="btn btn--primary">View experience →</a>
+          <a href="#work" className="btn btn--ghost">See projects</a>
           <a href="#contact" className="btn btn--ghost">Get in touch</a>
         </div>
 
         <div className="hero__stats mono">
           <div className="stat">
-            <span className="stat__value">ROS2 / C++</span>
-            <span className="stat__label">Core Stack</span>
+            <span className="stat__value">ROS2 · OpenCV · PyTorch</span>
+            <span className="stat__label">Core stack</span>
           </div>
           <div className="stat">
-            <span className="stat__value">Ubuntu</span>
-            <span className="stat__label">Environment</span>
+            <span className="stat__value">4</span>
+            <span className="stat__label">Internships, team &amp; teaching roles</span>
           </div>
           <div className="stat">
             <span className="stat__value">2026</span>

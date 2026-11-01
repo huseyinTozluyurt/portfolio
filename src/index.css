@@ -1031,3 +1031,25 @@ a {
 .xp-photo a:focus-visible img {
   border-color: var(--accent);
 }
+
+.xp-more {
+  margin: -8px 0 24px;
+}
+
+.xp-more summary {
+  cursor: pointer;
+  font-size: 0.75rem;
+  color: var(--accent);
+  margin-bottom: 16px;
+  width: fit-content;
+}
+
+.xp-more[open] summary {
+  margin-bottom: 16px;
+}
+
+.xp-photo--chart img {
+  object-fit: contain;
+  background: #fff;
+  padding: 4px;
+}

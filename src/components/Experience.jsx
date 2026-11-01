@@ -23,6 +23,9 @@ const images = Object.fromEntries(
   ])
 )
 
+// Photos shown before the "Show more" toggle.
+const GALLERY_PREVIEW = 6
+
 const experience = [
   {
     id: 'enro',
@@ -77,8 +80,8 @@ const experience = [
       { label: 'Repository', href: 'https://github.com/huseyinTozluyurt/Flyrank-Internship-MachineLearning' },
     ],
     photos: [
-      { file: 'flyrank-model-vs-baseline', caption: 'Models vs. existing rule on held-out clients' },
-      { file: 'flyrank-feature-signals', caption: 'Which page signals carry the ranking' },
+      { file: 'flyrank-model-vs-baseline', fit: 'contain', caption: 'Models vs. existing rule on held-out clients' },
+      { file: 'flyrank-feature-signals', fit: 'contain', caption: 'Which page signals carry the ranking' },
       { file: 'flyrank-photo', caption: 'Internship photo / certificate' },
     ],
   },
@@ -89,30 +92,37 @@ const experience = [
     period: 'Dec 2025 – Jan 2026',
     type: 'Internship',
     summary:
-      'Six-week computer vision and deep learning programme, ending in an end-to-end logo detection project: a custom-trained 32-class YOLOv7 detector feeding a pipeline that finds, segments, corrects and re-composites mirrored brand logos in images and video.',
+      'Built an end-to-end logo detection system: a custom-trained 32-class YOLOv7 model that finds brand logos in images and video, wrapped in a pipeline that tracks them across frames and can segment, mirror-correct and re-composite reflected logos. The internship started with core computer vision and ROS2 camera work before moving to this project.',
     bullets: [
-      'Trained and evaluated a 32-class YOLOv7 logo detector on FlickrLogos-32, with leakage-aware train/val/test splits, dataset auditing and preflight validation before every run.',
-      'Built the single-image correction pipeline: YOLO plus optional EasyOCR detections, MobileSAM / GrabCut segmentation, PCA symmetry estimation, homography-corrected flipping, and LaMa or OpenCV inpainting before blending the logo back.',
-      'Extended it to video with Hungarian track association (CLIP appearance + motion cost), Kalman-filter prediction and MediaPipe hand-occlusion handling that reuses cached results.',
-      'Shipped a PyQt5 desktop GUI so non-technical users can run batch image and video detection without the terminal.',
-      'Earlier weeks covered edge and corner detection (Canny, Harris, Shi-Tomasi), optical flow, DeepLabV3 segmentation in PyTorch, and custom ROS2 camera nodes.',
+      'Trained a 32-class YOLOv7 detector on FlickrLogos-32 with leakage-aware train/val/test splits and dataset audits. On 224 held-out test images it found 300 of 323 logos.',
+      'Added video tracking (Hungarian matching on CLIP appearance and motion, Kalman prediction) and a correction pipeline using MobileSAM / GrabCut segmentation, homography-aware flipping and inpainting.',
+      'Prototyped open-set detection: a generic logo detector proposes regions and CLIP matching labels them as a known brand or "unknown", so brands outside the training set can still be found.',
+      'Shipped a PyQt5 desktop app for batch image and video detection with adjustable confidence, IoU and image size.',
     ],
     metrics: [
       { value: '94.75%', label: 'mAP@0.5' },
       { value: '82.04%', label: 'mAP@0.5:0.95' },
+      { value: '85.71%', label: 'Precision' },
       { value: '92.88%', label: 'Recall' },
     ],
-    tech: ['Python', 'PyTorch', 'YOLOv7', 'OpenCV', 'MobileSAM', 'CLIP', 'PyQt5'],
+    tech: ['Python', 'PyTorch', 'YOLOv7', 'OpenCV', 'MobileSAM', 'CLIP', 'PyQt5', 'ROS2'],
     links: [
       { label: 'Repository', href: 'https://github.com/huseyinTozluyurt/Neural-Bridge-Internship-Logo-Detection' },
     ],
     photos: [
-      { file: 'neuralbridge-detection', caption: 'Logo detections on video frames' },
-      { file: 'neuralbridge-gui', caption: 'PyQt5 detection GUI' },
-      { file: 'neuralbridge-training', caption: 'Training loss and mAP over 100 epochs' },
-      { file: 'edge_detection', caption: 'Edge detection and thresholding exercises' },
-      { file: 'fine_tuning', caption: 'YOLO fine-tuning metrics' },
-      { file: 'neuralbridge-photo', caption: 'Internship photo / certificate' },
+      { file: 'neuralbridge-paulaner-toast', caption: 'Several Paulaner logos detected on moving glasses' },
+      { file: 'neuralbridge-cocacola', caption: 'Coca-Cola logos detected across a video scene' },
+      { file: 'neuralbridge-pepsi', caption: 'Pepsi detected at 0.95 confidence' },
+      { file: 'neuralbridge-open-set', caption: 'Generic logo detector on brands outside the 32 classes' },
+      { file: 'neuralbridge-gui', caption: 'PyQt5 batch detection app' },
+      { file: 'neuralbridge-pr-curve', fit: 'contain', caption: 'Precision–recall curve, 0.948 mAP@0.5' },
+      { file: 'neuralbridge-esso', caption: 'Esso logo on an industrial tank' },
+      { file: 'neuralbridge-erdinger', caption: 'Erdinger logos on bottles and glass' },
+      { file: 'neuralbridge-paulaner', caption: 'Paulaner logo in a brand video' },
+      { file: 'neuralbridge-f1-curve', fit: 'contain', caption: 'F1 curve, best 0.93 at confidence 0.774' },
+      { file: 'neuralbridge-confusion', fit: 'contain', caption: '32-class confusion matrix' },
+      { file: 'neuralbridge-training', fit: 'contain', caption: 'Training loss and mAP over 100 epochs' },
+      { file: 'neuralbridge-ros2-graph', fit: 'contain', caption: 'ROS2 camera perception node graph (early weeks)' },
     ],
   },
   {
@@ -142,12 +152,12 @@ const experience = [
   },
 ]
 
-function Photo({ file, caption }) {
+function Photo({ file, caption, fit }) {
   const src = images[file]
 
   if (src) {
     return (
-      <figure className="xp-photo">
+      <figure className={`xp-photo ${fit === 'contain' ? 'xp-photo--chart' : ''}`}>
         <a href={src} target="_blank" rel="noreferrer" title="Open full size">
           <img src={src} alt={caption} loading="lazy" />
         </a>
@@ -212,10 +222,22 @@ function ExperienceItem({ item, i }) {
           </ul>
 
           <div className="xp-gallery">
-            {item.photos.map((p) => (
+            {item.photos.slice(0, GALLERY_PREVIEW).map((p) => (
               <Photo key={p.file} {...p} />
             ))}
           </div>
+          {item.photos.length > GALLERY_PREVIEW && (
+            <details className="xp-more">
+              <summary className="mono">
+                Show {item.photos.length - GALLERY_PREVIEW} more images
+              </summary>
+              <div className="xp-gallery">
+                {item.photos.slice(GALLERY_PREVIEW).map((p) => (
+                  <Photo key={p.file} {...p} />
+                ))}
+              </div>
+            </details>
+          )}
 
           <footer className="xp-card__foot">
             <ul className="card__tech mono">

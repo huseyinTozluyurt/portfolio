@@ -118,6 +118,7 @@ const experience = [
       { file: 'neuralbridge-pr-curve', fit: 'contain', caption: 'Precision–recall curve, 0.948 mAP@0.5' },
       { file: 'neuralbridge-esso', caption: 'Esso logo on an industrial tank' },
       { file: 'neuralbridge-erdinger', caption: 'Erdinger logos on bottles and glass' },
+      { file: 'neuralbridge-pepsi-ad', caption: 'Small Pepsi can detected in an animated ad (0.66)' },
       { file: 'neuralbridge-paulaner', caption: 'Paulaner logo in a brand video' },
       { file: 'neuralbridge-f1-curve', fit: 'contain', caption: 'F1 curve, best 0.93 at confidence 0.774' },
       { file: 'neuralbridge-confusion', fit: 'contain', caption: '32-class confusion matrix' },

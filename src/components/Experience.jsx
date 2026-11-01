@@ -114,6 +114,7 @@ const experience = [
       { file: 'neuralbridge-f1-curve', fit: 'contain', caption: 'F1 curve, best 0.93 at confidence 0.774' },
       { file: 'neuralbridge-pr-curve', fit: 'contain', caption: 'Precision–recall curve, 0.948 mAP@0.5' },
       { file: 'neuralbridge-training', fit: 'contain', caption: 'Training loss and mAP over 100 epochs' },
+      { file: 'neuralbridge-ros2-graph', fit: 'contain', caption: 'ROS2 camera perception node graph (early weeks)' },
       { file: 'neuralbridge-gui', caption: 'PyQt5 batch detection app' },
       { file: 'neuralbridge-paulaner-toast', caption: 'Several Paulaner logos detected on moving glasses' },
       { file: 'neuralbridge-cocacola', caption: 'Coca-Cola logos detected across a video scene' },
@@ -123,7 +124,6 @@ const experience = [
       { file: 'neuralbridge-erdinger', caption: 'Erdinger logos on bottles and glass' },
       { file: 'neuralbridge-pepsi-ad', caption: 'Small Pepsi can detected in an animated ad (0.66)' },
       { file: 'neuralbridge-paulaner', caption: 'Paulaner logo in a brand video' },
-      { file: 'neuralbridge-ros2-graph', fit: 'contain', caption: 'ROS2 camera perception node graph (early weeks)' },
     ],
   },
   {

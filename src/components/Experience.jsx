@@ -274,6 +274,28 @@ const experience = [
     ],
   },
   {
+    id: 'tumer',
+    org: 'TUMER Engineering',
+    role: 'Embedded Software Development Intern',
+    period: '2025',
+    type: 'Internship',
+    summary:
+      'Embedded software and IoT application development: bare-metal STM32 firmware that reads sensors and drives a local display, and a React + Vite web application that shows the microcontroller\'s sensor data to the user.',
+    bullets: [
+      'Built an environmental telemetry node on an STM32F103C8T6, with a custom one-wire driver that reads a DHT11 temperature sensor using microsecond hardware timing (TIM1 at 1 MHz).',
+      'Drove a 128×64 SSD1306 OLED over I2C at 400 kHz as a local Human-Machine Interface, with hardware-debounced GPIO interrupts for changing the setpoint.',
+      'Developed an IoT application that streams the microcontroller\'s sensor readings to a React + Vite web interface for live display.',
+    ],
+    tech: ['STM32', 'Embedded C', 'STM32 HAL', 'I2C', 'Hardware Timers', 'OLED HMI', 'IoT', 'React + Vite'],
+    links: [
+      { label: 'STM32 projects repository', href: 'https://github.com/huseyinTozluyurt/STM32-Projects-EmbeddedSystems' },
+    ],
+    photos: [
+      { file: 'thermistor_stm32', caption: 'STM32 telemetry node with I2C OLED display' },
+      { file: 'tumer-iot-dashboard', caption: 'React + Vite sensor dashboard' },
+    ],
+  },
+  {
     id: 'tutoring',
     org: 'Turkish Technology Team Foundation',
     role: 'Robotics & Embedded Systems Tutor',

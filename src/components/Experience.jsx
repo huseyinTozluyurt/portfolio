@@ -275,7 +275,7 @@ const experience = [
   },
   {
     id: 'tutoring',
-    org: 'Robotics Tutoring',
+    org: 'Turkish Technology Team Foundation',
     role: 'Robotics & Embedded Systems Tutor',
     period: '2025',
     type: 'Teaching',

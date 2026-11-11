@@ -1,8 +1,5 @@
 import BoundingBox from './BoundingBox.jsx'
 
-// --- Concept render ---
-import roboticsAiImg from '../assets/images/robotics_ai_img.png'
-
 // --- Physical hardware & project images ---
 import robotImg from '../assets/images/delivery-robot.jpg'
 import thermistorImg from '../assets/images/thermistor_stm32.jpeg'
@@ -29,36 +26,10 @@ const flagshipProject = [
   {
     tag: 'FLAGSHIP PLATFORM',
     conf: 0.99,
-    title: 'AkarBot — Indoor Autonomous Delivery Robot',
-    role: 'Embedded Systems · Raspberry Pi · Arduino · STM32',
+    title: 'Indoor Delivery Robot',
+    role: 'Full-Stack Robotics · ROS 2 & Gazebo · Embedded Hardware · Web App',
     description:
-      'The physical robot: a four-wheel skid-steer delivery robot built from low-cost embedded hardware. A Raspberry Pi runs the Python mission and control scripts and talks over UART to two microcontrollers: an Arduino Uno that drives four DC motors through two L298N drivers and uses an MPU6050 IMU to hold its heading, and an STM32 board that reads four HC-SR04 ultrasonic sensors and streams the distances to the Pi. Its ROS 2 navigation and web app are built in the simulation stack below, which serves the same robot API the Pi will.',
-    highlights: [
-      { label: 'Heading Control', text: 'Per-side trim for straight driving, gyro yaw integration, and a 5° threshold that stops, counter-turns and then finishes the remaining drive time' },
-      { label: 'Distance Sensing', text: 'STM32 HAL driver on a 1 MHz TIM2 timer fires the four HC-SR04s in turn, 60 ms apart, and sends a CSV line every ~300 ms' },
-      { label: 'Serial Protocols', text: 'Pi → Arduino F/B/L/R/S commands with ACK / DONE replies; STM32 → Pi distance CSV with a sensor-timeout status' },
-      { label: 'Pi Control', text: 'Menu mission controllers, file-guided lateral correction, IMU-supervised forward runs and CSV sensor logging' },
-    ],
-    tech: ['Raspberry Pi', 'Python', 'Arduino C++', 'STM32 HAL (C)', 'MPU6050', 'HC-SR04', 'UART'],
-    image: roboticsAiImg,
-    imageAlt: 'Isometric CAD wireframe of autonomous delivery robot',
-    gallery: [
-      { src: robotImg, alt: 'Physical AkarBot chassis build', caption: 'Real build' },
-      { src: hwArduinoWiringImg, alt: 'Arduino Uno wiring diagram with L298N drivers and MPU6050', caption: 'Arduino Uno wiring' },
-      { src: hwStm32PinoutImg, alt: 'STM32CubeIDE pinout of the STM32F103C8T6', caption: 'STM32 pinout' },
-    ],
-    links: [
-      { label: 'View repository', href: 'https://github.com/huseyinTozluyurt/Indoor-Autonomous-Robot-for-Delivery' },
-    ],
-    featured: true,
-  },
-  {
-    tag: 'SIMULATION + WEB STACK',
-    conf: 0.98,
-    title: 'Indoor Delivery Robot — Gazebo Simulation & Web App',
-    role: 'ROS 2 Jazzy · Gazebo Harmonic · ArUco SLAM · React + Vite',
-    description:
-      'The software that makes the robot autonomous, built and measured in a ROS 2 Jazzy / Gazebo Harmonic model of a two-building campus. A Robotnik RB1 base maps the buildings on its own with ArUco-marker EKF-SLAM, plans the shortest multi-stop tour with Dijkstra and Held-Karp, and drives it. Customers order from a React + Vite web shop backed by Spring Boot and MySQL, an operator loads the robot, and the robot delivers and reports back. The simulation serves the same HTTP API as the real Raspberry Pi, so switching from Gazebo to hardware is one setting in the admin page.',
+      'An indoor robot that maps a building, plans the shortest multi-stop tour and delivers customer orders, developed in two repositories. The simulation stack runs in ROS 2 Jazzy / Gazebo Harmonic on a two-building campus: the robot maps the buildings on its own with ArUco-marker EKF-SLAM, plans tours with Dijkstra and Held-Karp, and drives them, while customers order from a React + Vite web shop backed by Spring Boot and MySQL. The hardware is a four-wheel skid-steer robot where a Raspberry Pi commands an Arduino Uno (motors and MPU6050 heading) and an STM32 (four HC-SR04 distance sensors) over UART. The simulation serves the same HTTP API as the real robot, so switching from Gazebo to hardware is one setting in the admin page.',
     stats: [
       { value: '−39 %', label: 'driving saved by the Held-Karp tour (6 stops)' },
       { value: '0.39 m', label: 'internal error of the final SLAM map' },
@@ -66,24 +37,29 @@ const flagshipProject = [
       { value: '0.08–0.16 m', label: 'stop error at the delivery pads' },
     ],
     highlights: [
-      { label: 'ArUco Detection', text: 'OpenCV detection and solvePnP (IPPE_SQUARE) give range, bearing and marker orientation; 32 markers in three sizes' },
-      { label: 'EKF-SLAM', text: 'Pose plus every marker in one EKF, gyro heading, χ² gating, and self-exploration to frontiers and unseen walls' },
+      { label: 'ArUco EKF-SLAM', text: 'solvePnP marker poses feed an EKF over the robot pose and every marker; the robot explores frontiers and unseen walls on its own' },
       { label: 'Map Correction', text: 'Pose-graph rebuild with robust Gauss-Newton: in a 15 % wheel-slip test marker errors fell from 72.7 m to 0.07 m' },
-      { label: 'Shortest Tour', text: 'Clearance-weighted Dijkstra on a 0.2 m grid, exact Held-Karp order (8 ms for 6 stops, 161 ms for 12), then 2-opt' },
-      { label: 'Web Communication', text: 'web_bridge REST API: /robot/plan, /robot/mission, /robot/status, manual control, emergency stop and a 5 fps camera stream' },
+      { label: 'Shortest Tour', text: 'Clearance-weighted Dijkstra on a 0.2 m grid, exact Held-Karp order (8 ms for 6 stops, 161 ms for 12), pure-pursuit driving' },
+      { label: 'Web Communication', text: 'web_bridge REST API: /robot/plan, /robot/mission, /robot/status, manual control, emergency stop and a live camera stream' },
+      { label: 'Heading Control', text: 'Arduino per-side trim, gyro yaw integration and a 5° threshold that stops, counter-turns and finishes the drive' },
+      { label: 'Distance Sensing', text: 'STM32 HAL driver on a 1 MHz timer fires four HC-SR04s in turn and streams a CSV line to the Pi every ~300 ms' },
     ],
-    tech: ['ROS 2 Jazzy', 'Gazebo Harmonic', 'OpenCV ArUco', 'EKF-SLAM', 'Dijkstra', 'React + Vite', 'Spring Boot', 'MySQL'],
+    tech: ['ROS 2 Jazzy', 'Gazebo Harmonic', 'OpenCV ArUco', 'EKF-SLAM', 'Dijkstra', 'React + Vite', 'Spring Boot', 'MySQL', 'Raspberry Pi', 'Arduino', 'STM32'],
     image: simOperatorRouteImg,
     imageAlt: 'Operator web page showing the Dijkstra shortest delivery tour on the robot SLAM map',
     imageBadge: 'WEB APP · SHORTEST TOUR',
     gallery: [
-      { src: simTwoBuildingsImg, alt: 'Two-building campus world in Gazebo Sim with ArUco markers', caption: 'two_buildings world' },
-      { src: simRb1Img, alt: 'Robotnik RB1 base with cargo box and mast camera', caption: 'RB1 robot + mast camera' },
-      { src: simTourCompareImg, alt: 'Order-of-arrival tour (290.7 m) vs Held-Karp tour (176.0 m)', caption: '290.7 m → 176.0 m tour' },
+      { src: simTwoBuildingsImg, alt: 'Two-building campus world in Gazebo Sim with ArUco markers', caption: 'Simulation: Gazebo campus' },
+      { src: simRb1Img, alt: 'Robotnik RB1 base with cargo box and mast camera', caption: 'Simulation: RB1 + mast camera' },
+      { src: simTourCompareImg, alt: 'Order-of-arrival tour (290.7 m) vs Held-Karp tour (176.0 m)', caption: 'Tour: 290.7 m → 176.0 m' },
+      { src: robotImg, alt: 'Physical delivery robot chassis build', caption: 'Hardware: real build' },
+      { src: hwArduinoWiringImg, alt: 'Arduino Uno wiring diagram with L298N drivers and MPU6050', caption: 'Hardware: Arduino wiring' },
+      { src: hwStm32PinoutImg, alt: 'STM32CubeIDE pinout of the STM32F103C8T6', caption: 'Hardware: STM32 pinout' },
     ],
     links: [
       { label: 'Project website', href: 'https://huseyintozluyurt.github.io/Indoor-Autonomous-Robot-For-Delivery-Simulation-Stack/' },
-      { label: 'View repository', href: 'https://github.com/huseyinTozluyurt/Indoor-Autonomous-Robot-For-Delivery-Simulation-Stack' },
+      { label: 'Simulation & web repository', href: 'https://github.com/huseyinTozluyurt/Indoor-Autonomous-Robot-For-Delivery-Simulation-Stack' },
+      { label: 'Hardware repository', href: 'https://github.com/huseyinTozluyurt/Indoor-Autonomous-Robot-for-Delivery' },
     ],
     featured: true,
   },

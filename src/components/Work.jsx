@@ -2,7 +2,6 @@ import BoundingBox from './BoundingBox.jsx'
 
 // --- Physical hardware & project images ---
 import robotImg from '../assets/images/delivery-robot.jpg'
-import ros2PerceptionImg from '../assets/images/ros2-perception.png'
 
 // --- Indoor delivery robot: simulation & web stack ---
 import simOperatorRouteImg from '../assets/images/delivery-sim-operator-route.jpg'
@@ -100,22 +99,6 @@ const factoryProjects = [
       { label: 'View repository', href: 'https://github.com/huseyinTozluyurt/Factory-Bent-Simulation-with-BCR-Robot-Arm' },
     ],
     featured: true,
-  },
-]
-
-// 3. SELECTED BUILDS
-const personalBuilds = [
-  {
-    tag: 'ROBOT PERCEPTION',
-    conf: 0.95,
-    title: 'ROS2 Camera Perception Pipeline',
-    role: 'ROS2 Jazzy · Modular Vision Nodes',
-    description:
-      'A topic-based ROS2 Jazzy perception stack for a USB camera: separate nodes for capture, image processing, bounding-box visualization and green object detection, each publishing its own topic (raw, processed, debug, mask, detected) so stages can be swapped or inspected independently in rqt.',
-    tech: ['ROS2 Jazzy', 'OpenCV', 'cv_bridge', 'Python'],
-    image: ros2PerceptionImg,
-    imageAlt: 'ROS2 node graph of the camera perception pipeline',
-    repo: 'https://github.com/huseyinTozluyurt/ROS2-Perception-Project',
   },
 ]
 
@@ -233,13 +216,6 @@ export default function Work() {
         <h3 className="work__subhead mono">Robot Arm &amp; Factory Vision</h3>
         <div className="work__grid work__grid--spaced">
           {factoryProjects.map((p, i) => (
-            <ProjectCard p={p} i={i} key={p.title} />
-          ))}
-        </div>
-
-        <h3 className="work__subhead mono">Perception Builds</h3>
-        <div className="work__grid">
-          {personalBuilds.map((p, i) => (
             <ProjectCard p={p} i={i} key={p.title} />
           ))}
         </div>

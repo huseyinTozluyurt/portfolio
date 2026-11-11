@@ -239,12 +239,13 @@ const experience = [
     period: 'Dec 2025 – Jan 2026',
     type: 'Internship',
     summary:
-      'Built an end-to-end logo detection system: a custom-trained 32-class YOLOv7 model that finds brand logos in images and video, wrapped in a pipeline that tracks them across frames and can segment, mirror-correct and re-composite reflected logos. The internship started with core computer vision and ROS2 camera work before moving to this project.',
+      'Built an end-to-end logo detection system: a custom-trained 32-class YOLOv7 model that finds brand logos in images and video, wrapped in a pipeline that tracks them across frames and can segment, mirror-correct and re-composite reflected logos. The internship started with robot perception: a modular ROS2 camera pipeline, before moving to this project.',
     bullets: [
       'Trained a 32-class YOLOv7 detector on FlickrLogos-32 with leakage-aware train/val/test splits and dataset audits. On 224 held-out test images it found 300 of 323 logos.',
       'Added video tracking (Hungarian matching on CLIP appearance and motion, Kalman prediction) and a correction pipeline using MobileSAM / GrabCut segmentation, homography-aware flipping and inpainting.',
       'Prototyped open-set detection: a generic logo detector proposes regions and CLIP matching labels them as a known brand or "unknown", so brands outside the training set can still be found.',
       'Shipped a PyQt5 desktop app for batch image and video detection with adjustable confidence, IoU and image size.',
+      'Robot perception: built a topic-based ROS2 Jazzy perception stack for a USB camera, with separate nodes for capture, image processing, bounding-box visualization and green object detection. Each stage publishes its own topic (raw, processed, debug, mask, detected), so stages can be swapped or inspected independently in rqt.',
     ],
     metrics: [
       { value: '94.75%', label: 'mAP@0.5' },
@@ -252,16 +253,17 @@ const experience = [
       { value: '85.71%', label: 'Precision' },
       { value: '92.88%', label: 'Recall' },
     ],
-    tech: ['Python', 'PyTorch', 'YOLOv7', 'OpenCV', 'MobileSAM', 'CLIP', 'PyQt5', 'ROS2'],
+    tech: ['Python', 'PyTorch', 'YOLOv7', 'OpenCV', 'MobileSAM', 'CLIP', 'PyQt5', 'ROS2 Jazzy', 'cv_bridge'],
     links: [
-      { label: 'Repository', href: 'https://github.com/huseyinTozluyurt/Neural-Bridge-Internship-Logo-Detection' },
+      { label: 'Logo detection repository', href: 'https://github.com/huseyinTozluyurt/Neural-Bridge-Internship-Logo-Detection' },
+      { label: 'ROS2 perception repository', href: 'https://github.com/huseyinTozluyurt/ROS2-Perception-Project' },
     ],
     photos: [
       { file: 'neuralbridge-confusion', fit: 'contain', caption: '32-class confusion matrix' },
       { file: 'neuralbridge-f1-curve', fit: 'contain', caption: 'F1 curve, best 0.93 at confidence 0.774' },
       { file: 'neuralbridge-pr-curve', fit: 'contain', caption: 'Precision–recall curve, 0.948 mAP@0.5' },
       { file: 'neuralbridge-training', fit: 'contain', caption: 'Training loss and mAP over 100 epochs' },
-      { file: 'neuralbridge-ros2-graph', fit: 'contain', caption: 'ROS2 camera perception node graph (early weeks)' },
+      { file: 'neuralbridge-ros2-graph', fit: 'contain', caption: 'Robot perception: ROS2 camera pipeline node graph' },
       { file: 'neuralbridge-gui', caption: 'PyQt5 batch detection app' },
       { file: 'neuralbridge-paulaner-toast', caption: 'Several Paulaner logos detected on moving glasses' },
       { file: 'neuralbridge-cocacola', caption: 'Coca-Cola logos detected across a video scene' },

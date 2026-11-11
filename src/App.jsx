@@ -6,6 +6,7 @@ import Hero from './components/Hero'
 import About from './components/About'
 import Experience from './components/Experience'
 import Work, { GraduationProject } from './components/Work'
+import Certifications from './components/Certifications'
 import Contact from './components/Contact'
 import Footer from './components/Footer'
 
@@ -27,6 +28,7 @@ export default function App() {
               <GraduationProject />
               <About />
               <Experience />
+              <Certifications />
               <Work />
               <Contact />
             </main>

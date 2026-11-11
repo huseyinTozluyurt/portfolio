@@ -1,9 +1,11 @@
 import { useEffect, useRef, useState } from 'react'
+import { certifications } from './Certifications.jsx'
 
 const links = [
   { href: '#graduation', label: 'Graduation Project' },
   { href: '#about', label: 'About' },
   { href: '#experience', label: 'Experience' },
+  ...(certifications.length ? [{ href: '#certifications', label: 'Certifications' }] : []),
   { href: '#work', label: 'Projects' },
   { href: '#contact', label: 'Contact' },
 ]

@@ -9,7 +9,7 @@ export default function Contact() {
     <section className="section contact" id="contact">
       <div className="container contact__inner">
         <div>
-          <p className="eyebrow mono"><span className="eyebrow__num">05</span> Contact</p>
+          <p className="eyebrow mono"><span className="eyebrow__num">06</span> Contact</p>
           <h2 className="contact__title">
             Let&apos;s build something that has to work in the <em>real world.</em>
           </h2>

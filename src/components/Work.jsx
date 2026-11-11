@@ -235,7 +235,7 @@ export default function Work() {
   return (
     <section className="section work" id="work">
       <div className="container">
-        <p className="eyebrow mono"><span className="eyebrow__num">04</span> Selected projects</p>
+        <p className="eyebrow mono"><span className="eyebrow__num">05</span> Selected projects</p>
         <h2 className="section__title">Engineering Projects</h2>
 
         <h3 className="work__subhead mono">Robot Arm &amp; Factory Vision</h3>

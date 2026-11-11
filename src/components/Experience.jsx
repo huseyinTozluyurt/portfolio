@@ -285,17 +285,18 @@ const experience = [
       'Designed an ESP32 Mars rover as a teaching platform: the board hosts its own Wi-Fi server and drives DC motors through an L298N for differential steering.',
       'Built the rover’s web control panel in React (forward, reverse, turning and an emergency stop) so students can drive it from any browser.',
       'Used the rover build to teach motor control, wiring and wireless communication step by step.',
-      'Developed an educational app platform to support lessons and student practice.',
+      'Built Space Explorer, a kids learning platform for the lessons: a multiplayer, turn-based board game where players join a room, answer space-themed questions to move across the board and draw prize cards, with an admin panel for rooms and question sets (React + Vite, Spring Boot, MySQL).',
     ],
-    tech: ['ESP32', 'Arduino C++', 'L298N', 'React', 'Tailwind CSS', 'Teaching'],
+    tech: ['ESP32', 'Arduino C++', 'L298N', 'React', 'Tailwind CSS', 'Spring Boot', 'MySQL', 'Teaching'],
     links: [
       { label: 'Mars rover repository', href: 'https://github.com/huseyinTozluyurt/MarsRoverProject-ESP32' },
       { label: 'Rover demo video', href: 'https://www.youtube.com/watch?v=0JyftJ-eNdY' },
+      { label: 'Learning platform repository', href: 'https://github.com/huseyinTozluyurt/OnlineLearningPlatform' },
     ],
     photos: [
       { file: 'esp32_mars_rover', caption: 'ESP32 Mars rover' },
       { file: 'tutoring-class', caption: 'Teaching session' },
-      { file: 'tutoring-app', caption: 'Educational app platform' },
+      { file: 'tutoring-app', caption: 'Space Explorer learning game board' },
     ],
   },
 ]

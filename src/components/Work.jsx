@@ -4,8 +4,12 @@ import BoundingBox from './BoundingBox.jsx'
 import robotImg from '../assets/images/delivery-robot.jpg'
 
 // --- Indoor delivery robot: simulation & web stack ---
-import simOperatorRouteImg from '../assets/images/delivery-sim-operator-route.jpg'
-import simTwoBuildingsImg from '../assets/images/delivery-sim-two-buildings.jpg'
+import heroCollageImg from '../assets/images/delivery-hero-collage.jpg'
+import simCampusAreaImg from '../assets/images/delivery-sim-campus-area.jpg'
+import simArucoOverlayImg from '../assets/images/delivery-sim-aruco-overlay.jpg'
+import simMapCorrectionImg from '../assets/images/delivery-sim-map-correction.jpg'
+import webShopImg from '../assets/images/delivery-web-shop.jpg'
+import webCameraImg from '../assets/images/delivery-web-camera.jpg'
 import simRb1Img from '../assets/images/delivery-sim-rb1-robot.jpg'
 import simTourCompareImg from '../assets/images/delivery-sim-tour-compare.jpg'
 
@@ -43,13 +47,18 @@ const flagshipProject = [
       { label: 'Distance Sensing', text: 'STM32 HAL driver on a 1 MHz timer fires four HC-SR04s in turn and streams a CSV line to the Pi every ~300 ms' },
     ],
     tech: ['ROS 2 Jazzy', 'Gazebo Harmonic', 'OpenCV ArUco', 'EKF-SLAM', 'Dijkstra', 'React + Vite', 'Spring Boot', 'MySQL', 'Raspberry Pi', 'Arduino', 'STM32'],
-    image: simOperatorRouteImg,
-    imageAlt: 'Operator web page showing the Dijkstra shortest delivery tour on the robot SLAM map',
-    imageBadge: 'WEB APP · SHORTEST TOUR',
+    image: heroCollageImg,
+    imageAlt: 'Gazebo two-building campus world, the operator web page with the shortest tour, and the final ArUco SLAM map',
+    imageBadge: 'GAZEBO WORLD · WEB APP · SLAM MAP',
+    layout: 'stacked',
     gallery: [
-      { src: simTwoBuildingsImg, alt: 'Two-building campus world in Gazebo Sim with ArUco markers', caption: 'Simulation: Gazebo campus' },
+      { src: simCampusAreaImg, alt: 'campus_area Gazebo world with delivery pads', caption: 'Simulation: campus_area world' },
       { src: simRb1Img, alt: 'Robotnik RB1 base with cargo box and mast camera', caption: 'Simulation: RB1 + mast camera' },
+      { src: simArucoOverlayImg, alt: 'Mast camera view with detected ArUco markers', caption: 'ArUco detection from the mast camera' },
+      { src: simMapCorrectionImg, alt: 'Pose-graph correction of a run with 15 % wheel slip', caption: 'Map correction (15 % wheel slip)' },
       { src: simTourCompareImg, alt: 'Order-of-arrival tour (290.7 m) vs Held-Karp tour (176.0 m)', caption: 'Tour: 290.7 m → 176.0 m' },
+      { src: webShopImg, alt: 'User shop page with cart and delivery point on the SLAM map', caption: 'Web app: shop' },
+      { src: webCameraImg, alt: 'Admin camera streaming page with manual control and emergency stop', caption: 'Web app: live camera + control' },
       { src: robotImg, alt: 'Physical delivery robot chassis build', caption: 'Hardware: real build' },
       { src: hwArduinoWiringImg, alt: 'Arduino Uno wiring diagram with L298N drivers and MPU6050', caption: 'Hardware: Arduino wiring' },
       { src: hwStm32PinoutImg, alt: 'STM32CubeIDE pinout of the STM32F103C8T6', caption: 'Hardware: STM32 pinout' },
@@ -104,6 +113,7 @@ const factoryProjects = [
 
 function ProjectCard({ p, i }) {
   const { featured } = p
+  const stacked = p.layout === 'stacked'
 
   return (
     <BoundingBox
@@ -113,13 +123,15 @@ function ProjectCard({ p, i }) {
       delay={(i % 6) * 70}
       className={`bbox--card ${featured ? 'bbox--featured' : ''}`}
     >
-      <article className={`card ${featured ? 'card--featured' : ''}`}>
+      <article className={`card ${featured ? 'card--featured' : ''} ${stacked ? 'card--stacked' : ''}`}>
         {featured ? (
           <div className="card__media card__media--dashboard">
             {p.image && (
               <div className="media-frame">
                 <span className="media-badge mono">{p.imageBadge || 'ARCHITECTURAL CONCEPT'}</span>
-                <img src={p.image} alt={p.imageAlt || ''} loading="lazy" className="media-img media-img--wide" />
+                <a href={p.image} target="_blank" rel="noreferrer" title="Open full size">
+                  <img src={p.image} alt={p.imageAlt || ''} loading="lazy" className="media-img media-img--wide" />
+                </a>
               </div>
             )}
             {p.gallery && (

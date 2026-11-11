@@ -1393,10 +1393,12 @@ figure.media-frame {
 
 .card__links {
   display: flex;
-  gap: 20px;
+  gap: 8px 20px;
   flex-wrap: wrap;
+  margin-top: 16px;
 }
 
 .card__links .card__repo {
+  margin-top: 0;
   color: var(--accent);
 }

@@ -215,7 +215,7 @@ export function GraduationProject() {
   return (
     <section className="section work graduation" id="graduation">
       <div className="container">
-        <p className="eyebrow mono">// graduation project</p>
+        <p className="eyebrow mono"><span className="eyebrow__num">01</span> Graduation project</p>
         <h2 className="section__title">Graduation Project</h2>
         <p className="section__lede">
           My B.S. Computer Engineering graduation project: an autonomous indoor delivery robot, built
@@ -235,7 +235,7 @@ export default function Work() {
   return (
     <section className="section work" id="work">
       <div className="container">
-        <p className="eyebrow mono">// selected projects</p>
+        <p className="eyebrow mono"><span className="eyebrow__num">04</span> Selected projects</p>
         <h2 className="section__title">Engineering Projects</h2>
 
         <h3 className="work__subhead mono">Robot Arm &amp; Factory Vision</h3>

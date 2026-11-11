@@ -525,12 +525,24 @@ export default function Experience() {
   return (
     <section className="section experience" id="experience">
       <div className="container">
-        <p className="eyebrow mono">// experience &amp; internships</p>
+        <p className="eyebrow mono"><span className="eyebrow__num">03</span> Experience &amp; internships</p>
         <h2 className="section__title">Where I&apos;ve Worked</h2>
         <p className="section__lede">
           Industry internships, a robotics team role and teaching. Each entry links to the code or
           write-up behind it.
         </p>
+
+        <ol className="xp-index" aria-label="Roles at a glance">
+          {experience.map((item) => (
+            <li key={item.id}>
+              <a href={`#xp-${item.id}`}>
+                <span className="xp-index__period">{item.period}</span>
+                <span className="xp-index__org">{item.org}</span>
+                <span className="xp-index__role">{item.role}</span>
+              </a>
+            </li>
+          ))}
+        </ol>
 
         <ol className="xp-list">
           {experience.map((item, i) => (

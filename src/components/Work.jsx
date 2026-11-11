@@ -10,9 +10,13 @@ import ros2PerceptionImg from '../assets/images/ros2-perception.png'
 
 // --- Indoor delivery robot: simulation & web stack ---
 import simOperatorRouteImg from '../assets/images/delivery-sim-operator-route.jpg'
-import simSlamMapImg from '../assets/images/delivery-sim-slam-map.jpg'
-import simGazeboWorldImg from '../assets/images/delivery-sim-gazebo-world.jpg'
-import simDijkstraImg from '../assets/images/delivery-sim-dijkstra-mission.jpg'
+import simTwoBuildingsImg from '../assets/images/delivery-sim-two-buildings.jpg'
+import simRb1Img from '../assets/images/delivery-sim-rb1-robot.jpg'
+import simTourCompareImg from '../assets/images/delivery-sim-tour-compare.jpg'
+
+// --- Indoor delivery robot: hardware ---
+import hwArduinoWiringImg from '../assets/images/delivery-hw-arduino-wiring.svg'
+import hwStm32PinoutImg from '../assets/images/delivery-hw-stm32-pinout.jpg'
 
 // --- Factory bent simulation (ENRO) ---
 import factoryDualImg from '../assets/images/factory-bent-dual-circular.jpg'
@@ -25,21 +29,27 @@ const flagshipProject = [
   {
     tag: 'FLAGSHIP PLATFORM',
     conf: 0.99,
-    title: 'AkarBot — Autonomous Indoor Delivery Platform',
-    role: 'Full-Stack Robotics, ROS2 & Hardware Integration',
+    title: 'AkarBot — Indoor Autonomous Delivery Robot',
+    role: 'Embedded Systems · Raspberry Pi · Arduino · STM32',
     description:
-      'Architected an end-to-end autonomous delivery platform, engineering a cost-effective, vision-first navigation system that drops expensive LiDAR in favor of ArUco markers and a custom YOLO model. Orchestrated a ROS2 navigation stack on a Raspberry Pi, bridging visual tracking with an Arduino UNO for IMU-guided trim motor control. Developed a custom STM32 quad-sensor node using hardware timers to stream microsecond collision telemetry. The entire robot accepts HTTP dispatch requests via a custom Spring Boot, MySQL, and React web interface.',
+      'The physical robot: a four-wheel skid-steer delivery robot built from low-cost embedded hardware. A Raspberry Pi runs the Python mission and control scripts and talks over UART to two microcontrollers: an Arduino Uno that drives four DC motors through two L298N drivers and uses an MPU6050 IMU to hold its heading, and an STM32 board that reads four HC-SR04 ultrasonic sensors and streams the distances to the Pi. Its ROS 2 navigation and web app are built in the simulation stack below, which serves the same robot API the Pi will.',
     highlights: [
-      { label: 'Vision Navigation', text: 'ArUco point-to-point pathfinding combined with YOLO dynamic obstacle avoidance' },
-      { label: 'Bare-Metal Safety', text: 'STM32 quad-sensor array with 30ms hardware timeouts and IMU trim-based rotation' },
-      { label: 'Data Logging', text: 'Custom pipeline recording PWM, IMU data, and camera feeds for future ML optimization' },
-      { label: 'Simulation Twin', text: 'A full Gazebo simulation and web stack serving the same robot API (next card)' },
+      { label: 'Heading Control', text: 'Per-side trim for straight driving, gyro yaw integration, and a 5° threshold that stops, counter-turns and then finishes the remaining drive time' },
+      { label: 'Distance Sensing', text: 'STM32 HAL driver on a 1 MHz TIM2 timer fires the four HC-SR04s in turn, 60 ms apart, and sends a CSV line every ~300 ms' },
+      { label: 'Serial Protocols', text: 'Pi → Arduino F/B/L/R/S commands with ACK / DONE replies; STM32 → Pi distance CSV with a sensor-timeout status' },
+      { label: 'Pi Control', text: 'Menu mission controllers, file-guided lateral correction, IMU-supervised forward runs and CSV sensor logging' },
     ],
-    tech: ['ROS2', 'STM32', 'Embedded C++', 'Computer Vision', 'Raspberry Pi', 'React', 'Spring Boot'],
+    tech: ['Raspberry Pi', 'Python', 'Arduino C++', 'STM32 HAL (C)', 'MPU6050', 'HC-SR04', 'UART'],
     image: roboticsAiImg,
     imageAlt: 'Isometric CAD wireframe of autonomous delivery robot',
-    gallery: [{ src: robotImg, alt: 'Physical AkarBot chassis build' }],
-    repo: 'https://github.com/huseyinTozluyurt/Indoor-Autonomous-Robot-for-Delivery',
+    gallery: [
+      { src: robotImg, alt: 'Physical AkarBot chassis build', caption: 'Real build' },
+      { src: hwArduinoWiringImg, alt: 'Arduino Uno wiring diagram with L298N drivers and MPU6050', caption: 'Arduino Uno wiring' },
+      { src: hwStm32PinoutImg, alt: 'STM32CubeIDE pinout of the STM32F103C8T6', caption: 'STM32 pinout' },
+    ],
+    links: [
+      { label: 'View repository', href: 'https://github.com/huseyinTozluyurt/Indoor-Autonomous-Robot-for-Delivery' },
+    ],
     featured: true,
   },
   {
@@ -48,24 +58,29 @@ const flagshipProject = [
     title: 'Indoor Delivery Robot — Gazebo Simulation & Web App',
     role: 'ROS 2 Jazzy · Gazebo Harmonic · ArUco SLAM · React + Vite',
     description:
-      'The simulation and software stack behind the delivery robot. In a ROS 2 Jazzy / Gazebo Harmonic model of a two-building campus, the robot maps the buildings with ArUco-marker visual SLAM, plans the shortest multi-stop tour with Dijkstra, and drives it on its own. Customers order from a React + Vite web shop backed by Spring Boot and MySQL, an operator loads the robot, and the robot delivers. The robot side serves the same HTTP API in simulation and on the real Raspberry Pi, so the web app moves from Gazebo to hardware by changing one IP.',
+      'The software that makes the robot autonomous, built and measured in a ROS 2 Jazzy / Gazebo Harmonic model of a two-building campus. A Robotnik RB1 base maps the buildings on its own with ArUco-marker EKF-SLAM, plans the shortest multi-stop tour with Dijkstra and Held-Karp, and drives it. Customers order from a React + Vite web shop backed by Spring Boot and MySQL, an operator loads the robot, and the robot delivers and reports back. The simulation serves the same HTTP API as the real Raspberry Pi, so switching from Gazebo to hardware is one setting in the admin page.',
+    stats: [
+      { value: '−39 %', label: 'driving saved by the Held-Karp tour (6 stops)' },
+      { value: '0.39 m', label: 'internal error of the final SLAM map' },
+      { value: '242 m', label: 'driven to map a 70 × 45 m campus' },
+      { value: '0.08–0.16 m', label: 'stop error at the delivery pads' },
+    ],
     highlights: [
-      { label: 'ArUco EKF-SLAM', text: 'Self-exploring mapper: EKF over robot pose and markers, lidar occupancy grid, delivery points saved in front of each marker' },
-      { label: 'Shortest Tour', text: 'Dijkstra on a 0.2 m clearance map for every leg, exact best stop order with Held-Karp (2-opt beyond 12 stops)' },
-      { label: 'Autonomous Driving', text: 'Pure-pursuit control, obstacle stop and replan, and a camera check that the right marker is in view at each stop' },
-      { label: 'Web Communication', text: 'web_bridge HTTP API (/robot/plan, /robot/mission, /robot/status, live camera) with order status pushed back to the backend' },
-      { label: 'Map Correction', text: 'Pose-graph optimisation (robust Gauss-Newton) repairs maps spoiled by wheel slip' },
+      { label: 'ArUco Detection', text: 'OpenCV detection and solvePnP (IPPE_SQUARE) give range, bearing and marker orientation; 32 markers in three sizes' },
+      { label: 'EKF-SLAM', text: 'Pose plus every marker in one EKF, gyro heading, χ² gating, and self-exploration to frontiers and unseen walls' },
+      { label: 'Map Correction', text: 'Pose-graph rebuild with robust Gauss-Newton: in a 15 % wheel-slip test marker errors fell from 72.7 m to 0.07 m' },
+      { label: 'Shortest Tour', text: 'Clearance-weighted Dijkstra on a 0.2 m grid, exact Held-Karp order (8 ms for 6 stops, 161 ms for 12), then 2-opt' },
+      { label: 'Web Communication', text: 'web_bridge REST API: /robot/plan, /robot/mission, /robot/status, manual control, emergency stop and a 5 fps camera stream' },
     ],
     tech: ['ROS 2 Jazzy', 'Gazebo Harmonic', 'OpenCV ArUco', 'EKF-SLAM', 'Dijkstra', 'React + Vite', 'Spring Boot', 'MySQL'],
     image: simOperatorRouteImg,
     imageAlt: 'Operator web page showing the Dijkstra shortest delivery tour on the robot SLAM map',
     imageBadge: 'WEB APP · SHORTEST TOUR',
     gallery: [
-      { src: simGazeboWorldImg, alt: 'Two-building campus world in Gazebo with ArUco markers', caption: 'Gazebo campus world' },
-      { src: simSlamMapImg, alt: 'ArUco SLAM map with markers and delivery points', caption: 'ArUco SLAM map' },
-      { src: simDijkstraImg, alt: 'Delivery GUI running a multi-stop Dijkstra mission', caption: 'Multi-stop mission' },
+      { src: simTwoBuildingsImg, alt: 'Two-building campus world in Gazebo Sim with ArUco markers', caption: 'two_buildings world' },
+      { src: simRb1Img, alt: 'Robotnik RB1 base with cargo box and mast camera', caption: 'RB1 robot + mast camera' },
+      { src: simTourCompareImg, alt: 'Order-of-arrival tour (290.7 m) vs Held-Karp tour (176.0 m)', caption: '290.7 m → 176.0 m tour' },
     ],
-    galleryBadge: 'SIMULATION',
     links: [
       { label: 'Project website', href: 'https://huseyintozluyurt.github.io/Indoor-Autonomous-Robot-For-Delivery-Simulation-Stack/' },
       { label: 'View repository', href: 'https://github.com/huseyinTozluyurt/Indoor-Autonomous-Robot-For-Delivery-Simulation-Stack' },

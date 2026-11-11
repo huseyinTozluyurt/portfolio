@@ -34,13 +34,31 @@ const experience = [
     period: '2026 – Present',
     type: 'Team role',
     summary:
-      'Built the computer vision and pick-and-place side of a factory conveyor ("bent") cell in ROS 2 Jazzy and Gazebo Harmonic. A 7-axis Black Coffee Robotics (BCR) arm watches moving products through three OpenCV cameras, catches each one off a bent and places it on another bent or sorts it into a trash or recycling bin. The project grew from one straight conveyor into ten worlds, a 12-arm pipeline factory and a vision lab for testing detectors.',
-    metrics: [
-      { value: '3', label: 'OpenCV cameras' },
-      { value: '10', label: 'Gazebo worlds' },
-      { value: '100+', label: 'product types' },
-      { value: '12', label: 'arms in the pipeline factory' },
-    ],
+      'Built the computer vision and pick-and-place side of a factory conveyor ("bent") cell in ROS 2 Jazzy and Gazebo Harmonic. A 7-axis Black Coffee Robotics (BCR) arm watches moving products through three OpenCV cameras, catches each one off a bent and places it on another bent or sorts it into a trash or recycling bin. Starting in March 2026 from one straight conveyor and a threshold script, the project grew into ten worlds, a 12-arm pipeline factory and a vision lab for testing detectors, documented in a project website and six reports.',
+    paper: {
+      kicker: 'Project website',
+      title: 'Factory Bent Simulation with a BCR Robot Arm',
+      meta: 'ENRO Team · ROS 2 Jazzy · Gazebo Harmonic · OpenCV · 2026',
+      abstract:
+        'Vision-guided pick and place on factory conveyor belts. The site walks through the architecture, every world, the three-camera vision pipeline, the pick cycle, the 100-product generator, the 12-arm pipeline factory and the vision lab, with a dated timeline and six PDF reports on how each part evolved.',
+      href: 'https://huseyintozluyurt.github.io/Factory-Bent-Simulation-with-BCR-Robot-Arm/',
+      siteHref: 'https://github.com/huseyinTozluyurt/Factory-Bent-Simulation-with-BCR-Robot-Arm',
+      primaryLabel: 'Open the project website →',
+      secondaryLabel: 'View the repository',
+      badge: 'Open website ↗',
+      image: 'factory-bent-dual-circular',
+      imageAlt: 'Dual circular factory cell with the BCR arm between two conveyor rings',
+      stats: [
+        { value: '7-axis', label: 'BCR robot arm' },
+        { value: '3', label: 'OpenCV cameras' },
+        { value: '10', label: 'Gazebo worlds' },
+        { value: '100+', label: 'product types' },
+        { value: '12', label: 'arms in the pipeline factory' },
+        { value: '10', label: 'vision lab experiments' },
+      ],
+      previews: [
+          ],
+    },
     bullets: [
       'Wrote a three-camera vision pipeline: an overhead detector (threshold or filled Canny, contours per belt lane, minAreaRect, pixel to world, arm masked out via TF), a side camera using MOG2 and Canny to confirm the product and measure its height, and a release camera that checks the drop zone is free.',
       'Closed the loop from camera to arm: the overhead tracker predicts when a product reaches the catch station, both cameras must agree, the bent stops, and the arm descends with URDF-based IK (damped least squares) and grips only when forward kinematics puts the tip within 1.5 cm of the product top.',
@@ -48,16 +66,63 @@ const experience = [
       'Generalised the cell to circular and straight bents in every combination, then generated a pipeline factory with 13 conveyors and 12 arms that passes route tests through chains of up to six arms.',
       'Built a vision lab where OpenCV or YOLO detectors plug into the controller, are scored offline without Gazebo, and record auto-labelled YOLO datasets while the arm works.',
     ],
+    deepDive: [
+      {
+        title: 'Three-camera vision',
+        unit: 'cameras',
+        open: true,
+        intro: 'Each camera answers one question, and the arm only moves when they agree.',
+        items: [
+          { name: 'Overhead · 13 m above the cell', method: 'grayscale · blur · threshold or filled Canny · contours per lane · minAreaRect · pixel ray → product plane', result: 'Where is each product, and when will it reach the arm? The arm itself is masked out of the image using TF.' },
+          { name: 'Side · at belt height', method: 'MOG2 background subtraction · Canny · contours on the belt', result: 'Is it really standing on the belt, and how tall is it? Must match the overhead track within 0.20 m.' },
+          { name: 'Release · above the drop zone', method: 'difference from a learned empty belt · threshold · contours', result: 'Is the drop zone on bent 2 free? Bent 2 stops during the release.' },
+        ],
+      },
+      {
+        title: 'The pick cycle',
+        unit: 'steps',
+        intro: 'One closed loop from detection to placement, run by vision_pick_place and the endpoint attacher.',
+        steps: [
+          { name: 'Home and predict', text: 'The arm waits at home while the overhead tracker predicts when a product will reach the catch station.' },
+          { name: 'Cross-check and hold', text: 'The side camera must see the same product standing on the belt; bent 1 then stops and the product is pinned so the gripper cannot push it.' },
+          { name: 'Descend and attach', text: 'Fast to 10 cm above the measured product top, then slowly, with forward kinematics checked every step. The grip happens only when the tip is within 1.5 cm.' },
+          { name: 'Lift and swing', text: 'Lift 0.30–0.60 m depending on the movement style chosen from the product height, then one smooth swing to bent 2, the trash bin or the recycling bin.' },
+          { name: 'Place or drop', text: 'Wait until the release camera reports the zone empty, place on bent 2 or drop over the bin centre with a simulated free fall, and return home.' },
+        ],
+      },
+      {
+        title: 'How the project evolved',
+        unit: 'eras',
+        intro: 'From a standalone detection script to a research platform, each step driven by what the previous one exposed.',
+        steps: [
+          { name: 'Simulation scaffold · Mar – Oct 2026', text: 'Worlds, cameras and the arm were built. Detection was a standalone script with no link to ROS coordinates, and the arm was moved by hand.' },
+          { name: 'Closing the loop · Oct 29', text: 'In one evening the project went from detection only to a camera-driven arm: picking still objects, then catching moving ones, then the side-camera cross-check and stopping the bent while grasping.' },
+          { name: 'Usability · Oct 30', text: 'The order GUI, product pictures, one-command start, speed control, factory decor, and bins as a second kind of destination.' },
+          { name: 'Generalisation · Oct 31', text: 'The cell was rebuilt so any bent shape works: six cell worlds from one layout table, then a whole factory of 12 cells.' },
+          { name: 'Research platform · Oct 31 – Nov 1', text: 'The fixed detector became a slot: plug in an OpenCV or YOLO detector, score it offline and test multi-arm routes. 100 realistic and user-supplied 3D products.' },
+        ],
+      },
+      {
+        title: 'Pipeline factory tests',
+        unit: 'tests',
+        intro: 'Products routed by vision through chains of arms in the 12-arm factory, each case scored PASS/FAIL per product.',
+        items: [
+          { name: 'one_hop_A1', method: 'S1 → C1', result: 'PASS (3/3) · 96 s' },
+          { name: 'bins_at_A1', method: 'A1 into trash, recycling and C1', result: 'PASS (3/3) · 84 s' },
+          { name: 'two_hops_to_S3', method: 'S1 → C1 → S3', result: 'PASS (2/2) · 119 s' },
+          { name: 'chain_to_large_dock', method: 'S1 → C1 → S3 → C3 → S7 → dock 3', result: 'PASS (2/2) · 244 s' },
+          { name: 'bins_along_the_chain', method: 'A3 recycles pizza boxes, A5 trashes coffee cans', result: 'PASS · 299 s' },
+          { name: 'longest_route_to_S9', method: 'S1 → C1 → S3 → C3 → S6 → C4 → S9 → dock 5', result: 'PASS · 307 s' },
+        ],
+      },
+    ],
     tech: ['ROS 2 Jazzy', 'Gazebo Harmonic', 'OpenCV', 'Python', 'PyQt5', 'URDF / IK', 'YOLO'],
     links: [
       { label: 'Project website', href: 'https://huseyintozluyurt.github.io/Factory-Bent-Simulation-with-BCR-Robot-Arm/' },
       { label: 'Repository', href: 'https://github.com/huseyinTozluyurt/Factory-Bent-Simulation-with-BCR-Robot-Arm' },
     ],
     photos: [
-      { file: 'factory-bent-dual-circular', caption: 'Dual circular cell with the BCR arm' },
-      { file: 'factory-bent-overhead-detections', caption: 'Overhead detections in world coordinates' },
       { file: 'factory-bent-side-camera', caption: 'Side-camera cross-check at the catch station' },
-      { file: 'factory-bent-order-gui', caption: 'PyQt5 order GUI with bin destinations' },
       { file: 'factory-bent-sorting-bins', caption: 'Trash and recycling bins' },
       { file: 'factory-bent-pipeline-factory', caption: 'Pipeline factory: 13 conveyors, 12 arms' },
       { file: 'factory-bent-products', caption: '100 realistic product types' },
@@ -269,8 +334,8 @@ function PaperCard({ paper }) {
     <section className="xp-paper" aria-label={paper.kicker}>
       <div className="xp-paper__media">
         <a className="xp-paper__shot" href={paper.href} target="_blank" rel="noreferrer">
-          {src && <img src={src} alt={`Screenshot of the paper: ${paper.title}`} loading="lazy" />}
-          <span className="xp-paper__badge mono">Open paper ↗</span>
+          {src && <img src={src} alt={paper.imageAlt || `Screenshot of the paper: ${paper.title}`} loading="lazy" />}
+          <span className="xp-paper__badge mono">{paper.badge || 'Open paper ↗'}</span>
         </a>
         {paper.previews && (
           <div className="xp-paper__previews">
@@ -294,8 +359,8 @@ function PaperCard({ paper }) {
           ))}
         </dl>
         <div className="xp-paper__actions">
-          <a href={paper.href} target="_blank" rel="noreferrer" className="btn btn--primary">Read the paper →</a>
-          <a href={paper.siteHref} target="_blank" rel="noreferrer" className="btn btn--ghost">Explore the project site</a>
+          <a href={paper.href} target="_blank" rel="noreferrer" className="btn btn--primary">{paper.primaryLabel || 'Read the paper →'}</a>
+          <a href={paper.siteHref} target="_blank" rel="noreferrer" className="btn btn--ghost">{paper.secondaryLabel || 'Explore the project site'}</a>
         </div>
       </div>
     </section>
@@ -310,7 +375,9 @@ function DeepDive({ sections }) {
           <summary>
             <span className="xp-deep__title">{sec.title}</span>
             <span className="xp-deep__count mono">
-              {sec.items ? `${sec.items.length} studies` : `${sec.steps.length} stages`}
+              {sec.items
+                ? `${sec.items.length} ${sec.unit || 'studies'}`
+                : `${sec.steps.length} ${sec.unit || 'stages'}`}
             </span>
           </summary>
           <p className="xp-deep__intro">{sec.intro}</p>

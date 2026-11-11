@@ -1402,3 +1402,41 @@ figure.media-frame {
   margin-top: 0;
   color: var(--accent);
 }
+
+/* ============ Stacked featured card (graduation project) ============ */
+.card--stacked {
+  grid-template-columns: 1fr;
+  gap: 0;
+}
+
+.card--stacked .card__media {
+  border-right: none;
+  border-bottom: 1px solid var(--line);
+  min-height: 0;
+}
+
+.card--stacked .media-img--wide {
+  aspect-ratio: 16 / 9;
+  object-fit: cover;
+}
+
+.card--stacked .media-gallery--multi:has(figcaption) {
+  grid-template-columns: repeat(auto-fill, minmax(170px, 1fr));
+}
+
+.card--stacked .card__body {
+  padding: 28px 32px 32px;
+}
+
+@media (min-width: 900px) {
+  .card--stacked .media-gallery--multi:has(figcaption) {
+    grid-template-columns: repeat(5, 1fr);
+  }
+  .card--stacked .card__highlights {
+    grid-template-columns: repeat(2, 1fr);
+    column-gap: 32px;
+  }
+  .card--stacked .card__stats {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}

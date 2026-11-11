@@ -2,7 +2,6 @@ import BoundingBox from './BoundingBox.jsx'
 
 // --- Physical hardware & project images ---
 import robotImg from '../assets/images/delivery-robot.jpg'
-import thermistorImg from '../assets/images/thermistor_stm32.jpeg'
 import ros2PerceptionImg from '../assets/images/ros2-perception.png'
 
 // --- Indoor delivery robot: simulation & web stack ---
@@ -117,18 +116,6 @@ const personalBuilds = [
     image: ros2PerceptionImg,
     imageAlt: 'ROS2 node graph of the camera perception pipeline',
     repo: 'https://github.com/huseyinTozluyurt/ROS2-Perception-Project',
-  },
-  {
-    tag: 'HARDWARE INTERFACING',
-    conf: 0.94,
-    title: 'STM32 Environmental Telemetry & HMI',
-    role: 'Bare-Metal Polling & I2C Display Control',
-    description:
-      'Engineered a localized environmental telemetry node using an STM32F103C8T6. Developed a custom one-wire protocol driver using microsecond hardware timers (TIM1 @ 1 MHz) to acquire temperature data from a DHT11 sensor. Implemented a responsive Human-Machine Interface (HMI) driving a 128×64 SSD1306 OLED via I2C at 400 kHz, featuring hardware-debounced GPIO interrupts for dynamic setpoint configuration.',
-    tech: ['STM32', 'Embedded C', 'I2C', 'Hardware Timers', 'OLED HMI'],
-    image: thermistorImg,
-    imageAlt: 'STM32 telemetry node driving an I2C OLED display',
-    repo: 'https://github.com/huseyinTozluyurt/STM32-Projects-EmbeddedSystems',
   },
 ]
 
@@ -250,7 +237,7 @@ export default function Work() {
           ))}
         </div>
 
-        <h3 className="work__subhead mono">Perception &amp; Embedded Builds</h3>
+        <h3 className="work__subhead mono">Perception Builds</h3>
         <div className="work__grid">
           {personalBuilds.map((p, i) => (
             <ProjectCard p={p} i={i} key={p.title} />

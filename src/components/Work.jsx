@@ -8,6 +8,18 @@ import robotImg from '../assets/images/delivery-robot.jpg'
 import thermistorImg from '../assets/images/thermistor_stm32.jpeg'
 import ros2PerceptionImg from '../assets/images/ros2-perception.png'
 
+// --- Indoor delivery robot: simulation & web stack ---
+import simOperatorRouteImg from '../assets/images/delivery-sim-operator-route.jpg'
+import simSlamMapImg from '../assets/images/delivery-sim-slam-map.jpg'
+import simGazeboWorldImg from '../assets/images/delivery-sim-gazebo-world.jpg'
+import simDijkstraImg from '../assets/images/delivery-sim-dijkstra-mission.jpg'
+
+// --- Factory bent simulation (ENRO) ---
+import factoryDualImg from '../assets/images/factory-bent-dual-circular.jpg'
+import factoryOverheadImg from '../assets/images/factory-bent-overhead-detections.jpg'
+import factoryOrderGuiImg from '../assets/images/factory-bent-order-gui.jpg'
+import factoryPipelineImg from '../assets/images/factory-bent-pipeline-factory.jpg'
+
 // 1. FLAGSHIP PROJECT
 const flagshipProject = [
   {
@@ -21,6 +33,7 @@ const flagshipProject = [
       { label: 'Vision Navigation', text: 'ArUco point-to-point pathfinding combined with YOLO dynamic obstacle avoidance' },
       { label: 'Bare-Metal Safety', text: 'STM32 quad-sensor array with 30ms hardware timeouts and IMU trim-based rotation' },
       { label: 'Data Logging', text: 'Custom pipeline recording PWM, IMU data, and camera feeds for future ML optimization' },
+      { label: 'Simulation Twin', text: 'A full Gazebo simulation and web stack serving the same robot API (next card)' },
     ],
     tech: ['ROS2', 'STM32', 'Embedded C++', 'Computer Vision', 'Raspberry Pi', 'React', 'Spring Boot'],
     image: roboticsAiImg,
@@ -29,9 +42,78 @@ const flagshipProject = [
     repo: 'https://github.com/huseyinTozluyurt/Indoor-Autonomous-Robot-for-Delivery',
     featured: true,
   },
+  {
+    tag: 'SIMULATION + WEB STACK',
+    conf: 0.98,
+    title: 'Indoor Delivery Robot — Gazebo Simulation & Web App',
+    role: 'ROS 2 Jazzy · Gazebo Harmonic · ArUco SLAM · React + Vite',
+    description:
+      'The simulation and software stack behind the delivery robot. In a ROS 2 Jazzy / Gazebo Harmonic model of a two-building campus, the robot maps the buildings with ArUco-marker visual SLAM, plans the shortest multi-stop tour with Dijkstra, and drives it on its own. Customers order from a React + Vite web shop backed by Spring Boot and MySQL, an operator loads the robot, and the robot delivers. The robot side serves the same HTTP API in simulation and on the real Raspberry Pi, so the web app moves from Gazebo to hardware by changing one IP.',
+    highlights: [
+      { label: 'ArUco EKF-SLAM', text: 'Self-exploring mapper: EKF over robot pose and markers, lidar occupancy grid, delivery points saved in front of each marker' },
+      { label: 'Shortest Tour', text: 'Dijkstra on a 0.2 m clearance map for every leg, exact best stop order with Held-Karp (2-opt beyond 12 stops)' },
+      { label: 'Autonomous Driving', text: 'Pure-pursuit control, obstacle stop and replan, and a camera check that the right marker is in view at each stop' },
+      { label: 'Web Communication', text: 'web_bridge HTTP API (/robot/plan, /robot/mission, /robot/status, live camera) with order status pushed back to the backend' },
+      { label: 'Map Correction', text: 'Pose-graph optimisation (robust Gauss-Newton) repairs maps spoiled by wheel slip' },
+    ],
+    tech: ['ROS 2 Jazzy', 'Gazebo Harmonic', 'OpenCV ArUco', 'EKF-SLAM', 'Dijkstra', 'React + Vite', 'Spring Boot', 'MySQL'],
+    image: simOperatorRouteImg,
+    imageAlt: 'Operator web page showing the Dijkstra shortest delivery tour on the robot SLAM map',
+    imageBadge: 'WEB APP · SHORTEST TOUR',
+    gallery: [
+      { src: simGazeboWorldImg, alt: 'Two-building campus world in Gazebo with ArUco markers', caption: 'Gazebo campus world' },
+      { src: simSlamMapImg, alt: 'ArUco SLAM map with markers and delivery points', caption: 'ArUco SLAM map' },
+      { src: simDijkstraImg, alt: 'Delivery GUI running a multi-stop Dijkstra mission', caption: 'Multi-stop mission' },
+    ],
+    galleryBadge: 'SIMULATION',
+    links: [
+      { label: 'Project website', href: 'https://huseyintozluyurt.github.io/Indoor-Autonomous-Robot-For-Delivery-Simulation-Stack/' },
+      { label: 'View repository', href: 'https://github.com/huseyinTozluyurt/Indoor-Autonomous-Robot-For-Delivery-Simulation-Stack' },
+    ],
+    featured: true,
+  },
 ]
 
-// 2. SELECTED BUILDS
+// 2. ROBOT ARM & FACTORY VISION (ENRO)
+const factoryProjects = [
+  {
+    tag: 'ENRO · COMPUTER VISION',
+    conf: 0.97,
+    title: 'Factory Bent Simulation with a BCR Robot Arm',
+    role: 'ENRO Team · ROS 2 Jazzy · Gazebo Harmonic · OpenCV',
+    description:
+      'Vision-guided pick and place on factory conveyor belts ("bents"). A 7-axis Black Coffee Robotics arm watches moving products through three cameras, catches each one off a bent and places it on another bent or sorts it into a trash or recycling bin. Built up from a single straight conveyor into ten worlds, including a pipeline factory with 13 conveyors and 12 arms, plus a vision lab for testing OpenCV or YOLO detectors.',
+    stats: [
+      { value: '7-axis', label: 'BCR robot arm' },
+      { value: '3', label: 'OpenCV cameras' },
+      { value: '10', label: 'Gazebo worlds' },
+      { value: '100+', label: 'product types' },
+    ],
+    highlights: [
+      { label: 'Three Cameras', text: 'Overhead detection and tracking, a side-camera cross-check that measures height, and a drop-zone check' },
+      { label: 'Pick & Place', text: 'URDF-based IK (damped least squares), catching moving products, grip only within 1.5 cm, six movement styles' },
+      { label: 'Sorting & Orders', text: 'Trash and recycling bins, auto-sort by material, and a PyQt5 order GUI for products, belt and simulation speed' },
+      { label: 'Vision Lab', text: 'Plug-in OpenCV / YOLO detectors, offline scoring, auto-labelled datasets and PASS/FAIL pipeline tests' },
+    ],
+    tech: ['ROS 2 Jazzy', 'Gazebo Harmonic', 'OpenCV', 'Python', 'PyQt5', 'URDF / IK', 'YOLO'],
+    image: factoryDualImg,
+    imageAlt: 'Dual circular factory cell with the BCR arm between two conveyor rings',
+    imageBadge: 'DUAL CIRCULAR CELL',
+    gallery: [
+      { src: factoryOverheadImg, alt: 'Overhead camera detections in world coordinates', caption: 'Overhead detections' },
+      { src: factoryOrderGuiImg, alt: 'PyQt5 order GUI with trash and recycling destinations', caption: 'Order GUI' },
+      { src: factoryPipelineImg, alt: 'Pipeline factory with 12 arms and 13 conveyors', caption: '12-arm pipeline factory' },
+    ],
+    galleryBadge: 'SIMULATION',
+    links: [
+      { label: 'Project website', href: 'https://huseyintozluyurt.github.io/Factory-Bent-Simulation-with-BCR-Robot-Arm/' },
+      { label: 'View repository', href: 'https://github.com/huseyinTozluyurt/Factory-Bent-Simulation-with-BCR-Robot-Arm' },
+    ],
+    featured: true,
+  },
+]
+
+// 3. SELECTED BUILDS
 const personalBuilds = [
   {
     tag: 'ROBOT PERCEPTION',
@@ -75,17 +157,22 @@ function ProjectCard({ p, i }) {
           <div className="card__media card__media--dashboard">
             {p.image && (
               <div className="media-frame">
-                <span className="media-badge mono">ARCHITECTURAL CONCEPT</span>
+                <span className="media-badge mono">{p.imageBadge || 'ARCHITECTURAL CONCEPT'}</span>
                 <img src={p.image} alt={p.imageAlt || ''} loading="lazy" className="media-img media-img--wide" />
               </div>
             )}
             {p.gallery && (
               <div className={`media-gallery ${p.gallery.length > 1 ? 'media-gallery--multi' : ''}`}>
                 {p.gallery.map((g) => (
-                  <div key={g.src} className="media-frame">
-                    <span className="media-badge media-badge--live mono">REAL BUILD</span>
-                    <img src={g.src} alt={g.alt} loading="lazy" className="media-img" />
-                  </div>
+                  <figure key={g.src} className="media-frame">
+                    {!g.caption && (
+                      <span className="media-badge media-badge--live mono">{p.galleryBadge || 'REAL BUILD'}</span>
+                    )}
+                    <a href={g.src} target="_blank" rel="noreferrer" title="Open full size">
+                      <img src={g.src} alt={g.alt} loading="lazy" className="media-img" />
+                    </a>
+                    {g.caption && <figcaption className="media-caption mono">{g.caption}</figcaption>}
+                  </figure>
                 ))}
               </div>
             )}
@@ -103,6 +190,17 @@ function ProjectCard({ p, i }) {
           <h3 className="card__title">{p.title}</h3>
           <p className="card__desc">{p.description}</p>
 
+          {p.stats && (
+            <dl className="xp-metrics card__stats">
+              {p.stats.map((m) => (
+                <div className="xp-metric" key={m.label}>
+                  <dt className="mono">{m.label}</dt>
+                  <dd>{m.value}</dd>
+                </div>
+              ))}
+            </dl>
+          )}
+
           {p.highlights && (
             <ul className="card__highlights">
               {p.highlights.map((h) => (
@@ -119,10 +217,20 @@ function ProjectCard({ p, i }) {
               <li key={t}>{t}</li>
             ))}
           </ul>
-          {p.repo && (
-            <a href={p.repo} target="_blank" rel="noreferrer" className="card__repo mono">
-              View repository →
-            </a>
+          {p.links ? (
+            <div className="card__links">
+              {p.links.map((l) => (
+                <a key={l.href} href={l.href} target="_blank" rel="noreferrer" className="card__repo mono">
+                  {l.label} →
+                </a>
+              ))}
+            </div>
+          ) : (
+            p.repo && (
+              <a href={p.repo} target="_blank" rel="noreferrer" className="card__repo mono">
+                View repository →
+              </a>
+            )
           )}
         </div>
       </article>
@@ -140,6 +248,13 @@ export default function Work() {
         <h3 className="work__subhead mono">Flagship Architecture</h3>
         <div className="work__grid work__grid--spaced">
           {flagshipProject.map((p, i) => (
+            <ProjectCard p={p} i={i} key={p.title} />
+          ))}
+        </div>
+
+        <h3 className="work__subhead mono">Robot Arm &amp; Factory Vision</h3>
+        <div className="work__grid work__grid--spaced">
+          {factoryProjects.map((p, i) => (
             <ProjectCard p={p} i={i} key={p.title} />
           ))}
         </div>

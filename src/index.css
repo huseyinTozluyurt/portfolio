@@ -1359,3 +1359,44 @@ a {
     padding: 0 12px 8px;
   }
 }
+
+/* ============ Work: captions, stats and multi-link footers ============ */
+figure.media-frame {
+  margin: 0;
+}
+
+.media-gallery--multi:has(figcaption) {
+  grid-template-columns: repeat(auto-fit, minmax(110px, 1fr));
+  gap: 12px;
+}
+
+.media-frame a {
+  display: block;
+  cursor: zoom-in;
+}
+
+.media-frame a:hover .media-img,
+.media-frame a:focus-visible .media-img {
+  border-color: var(--accent);
+}
+
+.media-caption {
+  margin-top: 6px;
+  font-size: 0.66rem;
+  color: var(--text-muted);
+}
+
+.card__stats {
+  grid-template-columns: repeat(auto-fit, minmax(90px, 1fr));
+  margin: 20px 0 4px;
+}
+
+.card__links {
+  display: flex;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+
+.card__links .card__repo {
+  color: var(--accent);
+}

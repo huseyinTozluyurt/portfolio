@@ -18,7 +18,8 @@ export default function Hero() {
         </p>
 
         <div className="hero__actions">
-          <a href="#experience" className="btn btn--primary">View experience →</a>
+          <a href="#graduation" className="btn btn--primary">Graduation project →</a>
+          <a href="#experience" className="btn btn--ghost">View experience</a>
           <a href="#work" className="btn btn--ghost">See projects</a>
           <a href="#contact" className="btn btn--ghost">Get in touch</a>
         </div>
@@ -29,7 +30,7 @@ export default function Hero() {
             <span className="stat__label">Core stack</span>
           </div>
           <div className="stat">
-            <span className="stat__value">4</span>
+            <span className="stat__value">5</span>
             <span className="stat__label">Internships, team &amp; teaching roles</span>
           </div>
           <div className="stat">

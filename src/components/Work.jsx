@@ -22,7 +22,7 @@ import factoryPipelineImg from '../assets/images/factory-bent-pipeline-factory.j
 // 1. FLAGSHIP PROJECT
 const flagshipProject = [
   {
-    tag: 'FLAGSHIP PLATFORM',
+    tag: 'GRADUATION PROJECT',
     conf: 0.99,
     title: 'Indoor Delivery Robot',
     role: 'Full-Stack Robotics · ROS 2 & Gazebo · Embedded Hardware · Web App',
@@ -199,19 +199,32 @@ function ProjectCard({ p, i }) {
   )
 }
 
+export function GraduationProject() {
+  return (
+    <section className="section work graduation" id="graduation">
+      <div className="container">
+        <p className="eyebrow mono">// graduation project</p>
+        <h2 className="section__title">Graduation Project</h2>
+        <p className="section__lede">
+          My B.S. Computer Engineering graduation project: an autonomous indoor delivery robot, built
+          as a ROS 2 / Gazebo simulation with a full web app and as a physical robot.
+        </p>
+        <div className="work__grid">
+          {flagshipProject.map((p, i) => (
+            <ProjectCard p={p} i={i} key={p.title} />
+          ))}
+        </div>
+      </div>
+    </section>
+  )
+}
+
 export default function Work() {
   return (
     <section className="section work" id="work">
       <div className="container">
         <p className="eyebrow mono">// selected projects</p>
         <h2 className="section__title">Engineering Projects</h2>
-
-        <h3 className="work__subhead mono">Flagship Architecture</h3>
-        <div className="work__grid work__grid--spaced">
-          {flagshipProject.map((p, i) => (
-            <ProjectCard p={p} i={i} key={p.title} />
-          ))}
-        </div>
 
         <h3 className="work__subhead mono">Robot Arm &amp; Factory Vision</h3>
         <div className="work__grid work__grid--spaced">

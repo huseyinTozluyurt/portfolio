@@ -220,20 +220,21 @@ const experience = [
       { label: 'Project website', href: 'https://huseyintozluyurt.github.io/Factory-Bent-Simulation-with-BCR-Robot-Arm/' },
       { label: 'Repository', href: 'https://github.com/huseyinTozluyurt/Factory-Bent-Simulation-with-BCR-Robot-Arm' },
     ],
+    // Shown in full, in build order, as a numbered story.
+    photoStory: true,
     photos: [
+      { file: 'factory-bent-conveyor-v1', caption: 'March 2026: the first straight conveyor' },
+      { file: 'factory-bent-pipeline-factory', caption: 'Scaled up: 13 conveyors and 12 arms' },
+      { file: 'factory-bent-products', caption: '100 realistic product types' },
+      { file: 'factory-bent-detection-1', caption: 'Early ROI detection and counting' },
       { file: 'factory-bent-dual-ring-detections', fit: 'contain', caption: 'Overhead OpenCV detections on both circular bents' },
       { file: 'factory-bent-ring-tracking', fit: 'contain', caption: 'ROI tracking as the arm catches a product' },
       { file: 'factory-bent-belt-detections', fit: 'contain', caption: 'Detections on a straight bent at the pick station' },
       { file: 'factory-bent-side-camera-pick', fit: 'contain', caption: 'Side camera at the pick station, with Canny edges' },
       { file: 'factory-bent-side-camera', caption: 'Side-camera cross-check at the catch station' },
-      { file: 'factory-bent-sorting-bins', caption: 'Trash and recycling bins' },
-      { file: 'factory-bent-pipeline-factory', caption: 'Pipeline factory: 13 conveyors, 12 arms' },
-      { file: 'factory-bent-products', caption: '100 realistic product types' },
       { file: 'factory-bent-vision-lab', fit: 'contain', caption: 'Vision lab: offline detector comparison' },
-      { file: 'factory-bent-conveyor-v1', caption: 'March 2026: first straight conveyor' },
-      { file: 'factory-bent-detection-1', caption: 'Early ROI detection and counting' },
-      { file: 'factory-bent-arm-gui', caption: 'Early joint-space arm GUI' },
-      { file: 'enro-team', caption: 'ENRO team / lab photo' },
+      { file: 'factory-bent-arm-gui', caption: 'Joint-space arm control GUI' },
+      { file: 'factory-bent-sorting-bins', caption: 'Sorting into trash and recycling bins' },
     ],
   },
   {
@@ -464,6 +465,7 @@ function DeepDive({ sections }) {
 }
 
 function ExperienceItem({ item, i }) {
+  const preview = item.photoStory ? item.photos.length : GALLERY_PREVIEW
   return (
     <li className="xp-item" id={`xp-${item.id}`}>
       <div className="xp-item__rail" aria-hidden="true">
@@ -508,18 +510,18 @@ function ExperienceItem({ item, i }) {
 
           {item.deepDive && <DeepDive sections={item.deepDive} />}
 
-          <div className="xp-gallery">
-            {item.photos.slice(0, GALLERY_PREVIEW).map((p) => (
+          <div className={`xp-gallery ${item.photoStory ? 'xp-gallery--story' : ''}`}>
+            {item.photos.slice(0, preview).map((p) => (
               <Photo key={p.file} {...p} />
             ))}
           </div>
-          {item.photos.length > GALLERY_PREVIEW && (
+          {item.photos.length > preview && (
             <details className="xp-more">
               <summary className="mono">
-                Show {item.photos.length - GALLERY_PREVIEW} more images
+                Show {item.photos.length - preview} more images
               </summary>
               <div className="xp-gallery">
-                {item.photos.slice(GALLERY_PREVIEW).map((p) => (
+                {item.photos.slice(preview).map((p) => (
                   <Photo key={p.file} {...p} />
                 ))}
               </div>

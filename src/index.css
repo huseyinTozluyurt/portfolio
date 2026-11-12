@@ -1698,6 +1698,35 @@ figure.media-frame {
   margin: 0;
 }
 
+/* Story gallery: every photo shown, numbered in build order. */
+.xp-gallery--story {
+  counter-reset: story;
+  grid-template-columns: repeat(auto-fill, minmax(min(220px, 100%), 1fr));
+  gap: 18px 14px;
+}
+
+.xp-gallery--story .xp-photo {
+  counter-increment: story;
+  position: relative;
+}
+
+.xp-gallery--story .xp-photo::before {
+  content: counter(story, decimal-leading-zero);
+  position: absolute;
+  top: 8px;
+  left: 8px;
+  z-index: 1;
+  font-family: var(--font-mono, ui-monospace, monospace);
+  font-size: 0.62rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  padding: 3px 7px;
+  border-radius: 999px;
+  color: #04201C;
+  background: #5EEAD4;
+  pointer-events: none;
+}
+
 .xp-photo a {
   display: block;
   cursor: zoom-in;

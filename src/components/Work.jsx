@@ -23,6 +23,12 @@ import factoryOverheadImg from '../assets/images/factory-bent-overhead-detection
 import factoryOrderGuiImg from '../assets/images/factory-bent-order-gui.jpg'
 import factoryPipelineImg from '../assets/images/factory-bent-pipeline-factory.jpg'
 
+// --- LANGuard (network security) ---
+import languardDashboardImg from '../assets/images/languard-dashboard.jpg'
+import languardThreatsImg from '../assets/images/languard-threats.jpg'
+import languardProtectionImg from '../assets/images/languard-protection.jpg'
+import languardDnsImg from '../assets/images/languard-dns.jpg'
+
 // 1. FLAGSHIP PROJECT
 const flagshipProject = [
   {
@@ -106,6 +112,44 @@ const factoryProjects = [
     links: [
       { label: 'Project website', href: 'https://huseyintozluyurt.github.io/Factory-Bent-Simulation-with-BCR-Robot-Arm/' },
       { label: 'View repository', href: 'https://github.com/huseyinTozluyurt/Factory-Bent-Simulation-with-BCR-Robot-Arm' },
+    ],
+    featured: true,
+  },
+]
+
+// 3. NETWORK SECURITY
+const securityProjects = [
+  {
+    tag: 'NETWORK SECURITY',
+    conf: 0.98,
+    title: 'LANGuard: LAN Attack Monitor and Intrusion Prevention',
+    role: 'Linux Security Tool · Python · scapy · nftables · ClamAV · PyQt5',
+    description:
+      'A LAN attack monitor, intrusion prevention system and real-time anti-malware for Linux laptops on weak or untrusted networks such as home Wi-Fi, shared offices, dorms and cafés. It catches ARP spoofing, rogue DHCP and IPv6 routers, DNS spoofing, SSL stripping, evil-twin Wi-Fi and LLMNR/Responder poisoning, stops them on the machine itself, and scans new files with ClamAV. It never changes your DNS settings and comes with a desktop app and a CLI.',
+    stats: [
+      { value: '13', label: 'LAN attack detectors' },
+      { value: '17', label: 'active protection responses' },
+      { value: '11', label: 'Linux distro releases tested in CI' },
+      { value: 'v1.7', label: 'current release' },
+    ],
+    highlights: [
+      { label: 'MITM Detection', text: 'ARP and NDP spoofing, rogue DHCP / DHCPv6 (mitm6) and router advertisements, DNS spoofing and leaks, evil-twin Wi-Fi, an extra hop on the path to the router' },
+      { label: 'Active Protection', text: 'Pins the verified router MAC, isolates an attacker\'s frames with nftables, repairs a hijacked DHCP lease and cuts connections that went through the attacker' },
+      { label: 'SSL Strip Guard', text: 'A local proxy upgrades plain-HTTP requests to sites you use over HTTPS before anything is sent, and warns on look-alike hosts' },
+      { label: 'Anti-Malware', text: 'Every new file in Downloads, Desktop and temp folders is scanned by ClamAV in milliseconds and quarantined if infected; disguised and fileless programs are flagged' },
+    ],
+    tech: ['Python', 'scapy', 'nftables', 'ClamAV', 'PyQt5', 'systemd', 'Linux networking', 'GitHub Actions'],
+    image: languardDashboardImg,
+    imageAlt: 'LANGuard desktop app dashboard with protection layers and threat counters',
+    imageBadge: 'DESKTOP APP · DASHBOARD',
+    gallery: [
+      { src: languardThreatsImg, alt: 'LANGuard threats page listing detected attacks', caption: 'Threats' },
+      { src: languardProtectionImg, alt: 'LANGuard active protection settings', caption: 'Active protection' },
+      { src: languardDnsImg, alt: 'LANGuard encrypted DNS status page', caption: 'Encrypted DNS check' },
+    ],
+    galleryBadge: 'APP',
+    links: [
+      { label: 'View repository', href: 'https://github.com/huseyinTozluyurt/LANGuard' },
     ],
     featured: true,
   },
@@ -241,6 +285,13 @@ export default function Work() {
         <h3 className="work__subhead mono">Robot Arm &amp; Factory Vision</h3>
         <div className="work__grid work__grid--spaced">
           {factoryProjects.map((p, i) => (
+            <ProjectCard p={p} i={i} key={p.title} />
+          ))}
+        </div>
+
+        <h3 className="work__subhead work__subhead--spaced mono">Network Security</h3>
+        <div className="work__grid work__grid--spaced">
+          {securityProjects.map((p, i) => (
             <ProjectCard p={p} i={i} key={p.title} />
           ))}
         </div>

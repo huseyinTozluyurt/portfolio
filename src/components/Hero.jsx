@@ -1,4 +1,4 @@
-import robotImg from '../assets/images/my_image.jpeg'
+import portraitImg from '../assets/images/my_image.jpeg'
 
 const telemetry = [
   { k: 'Tour saving', v: '−39 %' },
@@ -39,7 +39,7 @@ export default function Hero() {
           </div>
         </div>
 
-        <figure className="feed" aria-label="Graduation project: the indoor delivery robot">
+        <figure className="feed" aria-label="Huseyin Tozluyurt standing next to a humanoid robot">
           <div className="feed__bar mono">
             <span>
               <span className="feed__dots" aria-hidden="true"><i /><i /><i /></span>
@@ -48,22 +48,25 @@ export default function Hero() {
             <span className="feed__rec">LIVE</span>
           </div>
 
-          <a className="feed__view" href="#graduation" aria-label="Go to the graduation project">
+          <a className="feed__view feed__view--portrait" href="#about" aria-label="About Huseyin">
             <img
-              src={robotImg}
-              alt="The physical indoor delivery robot, a four-wheel skid-steer build, in a hallway"
+              src={portraitImg}
+              alt="Huseyin Tozluyurt standing next to a humanoid robot in a robotics lab"
               fetchpriority="high"
             />
-            <span className="feed__overlay" aria-hidden="true">
-              hardware build<br />
-              Raspberry Pi · Arduino · STM32
+            <span
+              className="feed__det feed__det--secondary"
+              style={{ left: '17.5%', top: '19%', width: '26.5%', height: '78%' }}
+              aria-hidden="true"
+            >
+              <span>engineer 0.99</span>
             </span>
             <span
               className="feed__det"
-              style={{ left: '40.5%', top: '15%', width: '15.5%', height: '28.5%' }}
+              style={{ left: '44%', top: '34%', width: '31%', height: '60%' }}
               aria-hidden="true"
             >
-              <span>delivery_robot 0.99</span>
+              <span>humanoid_robot 0.97</span>
             </span>
           </a>
 
@@ -77,7 +80,7 @@ export default function Hero() {
           </dl>
 
           <figcaption className="feed__caption mono">
-            <span>Graduation project · Indoor Delivery Robot</span>
+            <span>Figures: graduation project, Indoor Delivery Robot</span>
             <a href="#graduation">Details →</a>
           </figcaption>
         </figure>

@@ -287,13 +287,34 @@ const experience = [
       'Built an environmental telemetry node on an STM32F103C8T6, with a custom one-wire driver that reads a DHT11 temperature sensor using microsecond hardware timing (TIM1 at 1 MHz).',
       'Drove a 128×64 SSD1306 OLED over I2C at 400 kHz as a local Human-Machine Interface, with hardware-debounced GPIO interrupts for changing the setpoint.',
       'Developed an IoT application that streams the microcontroller\'s sensor readings to a React + Vite web interface for live display.',
+      'Interfaced HC-SR04 ultrasonic distance sensors with the STM32: a single-sensor proximity node with an LED warning, and a four-sensor (front, left, right, back) node for a mobile robot that streams every distance over UART.',
     ],
-    tech: ['STM32', 'Embedded C', 'STM32 HAL', 'I2C', 'Hardware Timers', 'OLED HMI', 'IoT', 'React + Vite'],
+    deepDive: [
+      {
+        title: 'HC-SR04 distance sensing on the STM32',
+        open: true,
+        unit: 'steps',
+        intro:
+          'The HC-SR04 measures distance with sound: it sends an ultrasonic burst and holds its ECHO pin high for as long as the echo takes to come back. The STM32 firmware (STM32 HAL, STM32F103C8T6) times that pulse in microseconds and turns it into centimetres.',
+        steps: [
+          { name: 'Trigger the burst', text: 'The MCU drives TRIG high for 10 µs. TIM2 runs as a 1 µs counter (prescaler 7 on the 8 MHz internal clock) and gives the exact microsecond delay.' },
+          { name: 'Time the echo', text: 'The firmware waits for ECHO to go high, resets TIM2 to 0 and counts the microseconds until ECHO falls again. That count is the round-trip time of the sound.' },
+          { name: 'Never hang', text: 'Both waits have a 30 ms timeout using HAL_GetTick(). A missing echo or a disconnected sensor returns an error code (999) instead of freezing the MCU.' },
+          { name: 'Convert to distance', text: 'distance_cm = pulse_µs / 58. Sound needs about 58 µs to travel one centimetre out and back.' },
+          { name: 'Single-sensor proximity node', text: 'ECHO on PA0, TRIG on PA1, LED on PB11. Under the 120 cm threshold the LED blinks fast (100 ms); on a sensor error it blinks slowly (700 ms); with a clear path it stays off.' },
+          { name: 'Four-sensor robot node', text: 'Front, left, right and back sensors (TRIG on PB0, PB1, PB10, PB11; ECHO on PA0–PA3) are read in turn every 300 ms against a 20 cm threshold. Two LEDs show the state in binary (clear, front/back obstacle, left/right obstacle, trapped or error), and USART1 at 115200 baud sends each distance with an OK/ERR status to higher-level navigation.' },
+        ],
+        link: { label: 'HC-SR04 code on GitHub', href: 'https://github.com/huseyinTozluyurt/STM32-Projects-EmbeddedSystems' },
+      },
+    ],
+    tech: ['STM32', 'Embedded C', 'STM32 HAL', 'I2C', 'Hardware Timers', 'HC-SR04', 'UART', 'OLED HMI', 'IoT', 'React + Vite'],
     links: [
       { label: 'STM32 projects repository', href: 'https://github.com/huseyinTozluyurt/STM32-Projects-EmbeddedSystems' },
     ],
     photos: [
       { file: 'thermistor_stm32', caption: 'STM32 telemetry node with I2C OLED display' },
+      { file: 'tumer-hcsr04-single', caption: 'STM32 with one HC-SR04 and a warning LED' },
+      { file: 'tumer-hcsr04-quad', caption: 'STM32 with four HC-SR04 sensors and status LEDs' },
       { file: 'tumer-iot-dashboard', caption: 'React + Vite sensor dashboard' },
     ],
   },

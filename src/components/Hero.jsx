@@ -1,4 +1,4 @@
-import robotImg from '../assets/images/delivery-robot.jpg'
+import robotImg from '../assets/images/my_image.jpeg'
 
 const telemetry = [
   { k: 'Tour saving', v: '−39 %' },

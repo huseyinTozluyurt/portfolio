@@ -29,7 +29,7 @@ const GALLERY_PREVIEW = 8
 const experience = [
   {
     id: 'flyrank',
-    org: 'FlyRank',
+    org: 'FlyRank AI',
     role: 'Machine Learning Intern',
     period: '2026',
     type: 'Internship',
@@ -38,7 +38,7 @@ const experience = [
     paper: {
       kicker: 'Capstone research paper',
       title: 'Which content pages should an editor review first?',
-      meta: 'Hüseyin Tozluyurt · FlyRank ML Internship · October 2026',
+      meta: 'Hüseyin Tozluyurt · FlyRank AI ML Internship · October 2026',
       abstract:
         'A client-held-out comparison of the existing "stale and high-traffic" rule against logistic regression and a random forest on 30,000 anonymized pages. Both models beat the rule (Precision@50 0.77 and 0.75 vs 0.66), and only the random forest held its precision once a near-mechanical missing-data signal was removed.',
       href: 'https://huseyintozluyurt.github.io/Flyrank-Internship-MachineLearning/#/paper',

@@ -221,6 +221,10 @@ const experience = [
       { label: 'Repository', href: 'https://github.com/huseyinTozluyurt/Factory-Bent-Simulation-with-BCR-Robot-Arm' },
     ],
     photos: [
+      { file: 'factory-bent-dual-ring-detections', fit: 'contain', caption: 'Overhead OpenCV detections on both circular bents' },
+      { file: 'factory-bent-ring-tracking', fit: 'contain', caption: 'ROI tracking as the arm catches a product' },
+      { file: 'factory-bent-belt-detections', fit: 'contain', caption: 'Detections on a straight bent at the pick station' },
+      { file: 'factory-bent-side-camera-pick', fit: 'contain', caption: 'Side camera at the pick station, with Canny edges' },
       { file: 'factory-bent-side-camera', caption: 'Side-camera cross-check at the catch station' },
       { file: 'factory-bent-sorting-bins', caption: 'Trash and recycling bins' },
       { file: 'factory-bent-pipeline-factory', caption: 'Pipeline factory: 13 conveyors, 12 arms' },

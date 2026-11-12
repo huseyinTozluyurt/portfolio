@@ -1,11 +1,5 @@
 import portraitImg from '../assets/images/my_image.jpeg'
 
-const telemetry = [
-  { k: 'Tour saving', v: '−39 %' },
-  { k: 'SLAM map error', v: '0.39 m' },
-  { k: 'Stop error', v: '0.08–0.16 m' },
-]
-
 export default function Hero() {
   return (
     <section className="section hero" id="top">
@@ -39,50 +33,28 @@ export default function Hero() {
           </div>
         </div>
 
-        <figure className="feed" aria-label="Huseyin Tozluyurt standing next to a humanoid robot">
-          <div className="feed__bar mono">
-            <span>
-              <span className="feed__dots" aria-hidden="true"><i /><i /><i /></span>
-              /camera/image_raw
-            </span>
-            <span className="feed__rec">LIVE</span>
-          </div>
-
-          <a className="feed__view feed__view--portrait" href="#about" aria-label="About Huseyin">
+        <figure className="portrait">
+          <div className="portrait__frame">
             <img
               src={portraitImg}
               alt="Huseyin Tozluyurt standing next to a humanoid robot in a robotics lab"
               fetchpriority="high"
             />
-            <span
-              className="feed__det feed__det--secondary"
-              style={{ left: '17.5%', top: '19%', width: '26.5%', height: '78%' }}
-              aria-hidden="true"
-            >
-              <span>engineer 0.99</span>
-            </span>
-            <span
-              className="feed__det"
-              style={{ left: '44%', top: '34%', width: '31%', height: '60%' }}
-              aria-hidden="true"
-            >
-              <span>humanoid_robot 0.97</span>
-            </span>
+            <span className="portrait__corner portrait__corner--tl" aria-hidden="true" />
+            <span className="portrait__corner portrait__corner--tr" aria-hidden="true" />
+            <span className="portrait__corner portrait__corner--bl" aria-hidden="true" />
+            <span className="portrait__corner portrait__corner--br" aria-hidden="true" />
+            <figcaption className="portrait__caption">
+              <span className="portrait__name">Huseyin Tozluyurt</span>
+              <span className="portrait__role mono">Computer engineer · robotics &amp; computer vision</span>
+            </figcaption>
+          </div>
+
+          <a className="portrait__card" href="#graduation">
+            <span className="portrait__card-k mono">Graduation project</span>
+            <span className="portrait__card-v">Indoor Delivery Robot</span>
+            <span className="portrait__card-meta mono">ROS 2 · ArUco EKF-SLAM · STM32 →</span>
           </a>
-
-          <dl className="feed__hud">
-            {telemetry.map((t) => (
-              <div key={t.k}>
-                <dt>{t.k}</dt>
-                <dd>{t.v}</dd>
-              </div>
-            ))}
-          </dl>
-
-          <figcaption className="feed__caption mono">
-            <span>Figures: graduation project, Indoor Delivery Robot</span>
-            <a href="#graduation">Details →</a>
-          </figcaption>
         </figure>
 
         <div className="hero__stats">
